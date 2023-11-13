@@ -3,6 +3,7 @@
     import Navigation from '../components/Navigation.vue'
     import Homepage from '../components/Homepage.vue'
     import Ourservice from '../components/Ourservice.vue'
+    import Aboutus from '../components/Aboutus.vue'
 </script>
 
 <template>
@@ -11,6 +12,7 @@
     
     <Homepage />
     <Ourservice />
+    <Aboutus />
       
     </main>
   
