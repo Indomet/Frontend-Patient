@@ -52,13 +52,78 @@
                     <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
                         <li><a class="dropdown-item" href="#">Sign out</a></li>
                     </ul>
-                </div>
         </div>
+
+    </div>
+    <div class="col py-3">
         
-        
+        <div v-if="currentContent === 'bookings'">
+          <Bookings />
+        </div>
+
+        <div v-if="currentContent === 'appointment'">
+          <Appointment />
+        </div>
+
+        <div v-if="currentContent === 'message'">
+          <Inbox />
+        </div>
+
+        <div v-if="currentContent === 'profile'">
+          <Usersetting />
+        </div>
+
+    
       </div>
       
     </div>
   </template>
   
+  <script>
+  import { ref } from 'vue';
+  import HomeView from '../views/HomeView.vue';
+  import Bookings from './Bookings.vue';
+  import Appointment from './Appointment.vue';
+  import Usersetting from './Usersetting.vue';
+  import Inbox from './Inbox.vue';
+
+  
+  export default {
+    components: {
+      HomeView,
+      Bookings,
+      Appointment,
+      Usersetting,
+      Inbox
+
+    },
+    setup() {
+      const currentContent = ref('appointment');
+  
+      const showContent = (contentName) => {
+        currentContent.value = contentName;
+      };
+
+      return {
+        currentContent,
+        showContent
+      };
+    },
+        methods: {
+
+            logout() {
+                this.$router.push('/');
+            }
+    
+    }
+}
+
+
+  </script>
+  
+  <style>
+  .backgroud {
+    background-color: #0e263c;
+  }
+  </style>
   
