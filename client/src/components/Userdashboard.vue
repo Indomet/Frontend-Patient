@@ -14,7 +14,7 @@
                 </a>
               </li>
               <li>
-                <a @click="showContent('bookings')" href="#" class="nav-link px-0 align-middle">
+                <a @click="showContent('booking')" href="#" class="nav-link px-0 align-middle">
                   <i class="fs-4 bi-calendar2-event"></i> <span class="ms-1 d-none d-sm-inline">Booking</span>
                 </a>
               </li>
@@ -57,8 +57,8 @@
     </div>
     <div class="col py-3">
         
-        <div v-if="currentContent === 'bookings'">
-          <Bookings />
+        <div v-if="currentContent === 'booking'">
+          <Booking />
         </div>
 
         <div v-if="currentContent === 'appointment'">
@@ -75,14 +75,14 @@
 
     
       </div>
-      
+    </div>
     </div>
   </template>
   
   <script>
   import { ref } from 'vue';
   import HomeView from '../views/HomeView.vue';
-  import Bookings from './Bookings.vue';
+  import Booking from './Booking.vue';
   import Appointment from './Appointment.vue';
   import Usersetting from './Usersetting.vue';
   import Inbox from './Inbox.vue';
@@ -91,7 +91,7 @@
   export default {
     components: {
       HomeView,
-      Bookings,
+      Booking,
       Appointment,
       Usersetting,
       Inbox
