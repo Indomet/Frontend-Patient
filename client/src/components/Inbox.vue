@@ -34,7 +34,7 @@
                                     <span class="mb-0 text-muted">{{ message.sender }}</span>
                                 </td>
                                 <td>
-                                    <a class="link" href="javascript:void(0)">
+                                    <a class="link" href="javascript:void(0)" @click="showMessageDetails(message)">
                                         <span class="text-dark">{{ message.content }}</span>
                                     </a>
                                 </td>
@@ -51,6 +51,13 @@
                 <button class="btn btn-danger" @click="deleteSelectedMessages">Delete </button>
             </div>
         </div>
+
+        <div v-if="selectedMessage" class="message-details">
+        <h3>Message Details</h3>
+        <p><strong>Sender:</strong> {{ selectedMessage.sender }}</p>
+        <p><strong>Content:</strong> {{ selectedMessage.content }}</p>
+        <p><strong>Received Time:</strong> {{ selectedMessage.receivedTime }}</p>
+    </div>
     </div>
 </template>
 
@@ -59,6 +66,7 @@ export default {
     data() {
         return {
             selectAll: false,
+            selectedMessage: null,
             messages: [
                 {
                     id: 'M1',
@@ -86,6 +94,9 @@ export default {
         },
         deleteSelectedMessages() {
             this.messages = this.messages.filter(msg => !msg.selected);
+        },
+        showMessageDetails(message) {
+            this.selectedMessage = message;
         }
     }
 }
