@@ -1,78 +1,91 @@
 <template>
-    
-    <div class="container">
-    <div class="row">
-        <div class="col-md-12">
+    <div class="m-3">
+        <div class="mb-4">
             <div class="card">
-                <div class="card-body text-white mailbox-widget pb-0" style=" background-color:  #567890">
+                <div class="card-body text-white mailbox-widget pb-0" style="background-color: #567890">
                     <h2 class="text-white pb-3">Your Message</h2>
-                    
-        </div>
-                
-                            <!-- Mail list-->
-                            <div class="table-responsive">
-                                <table class="table email-table no-wrap table-hover v-middle mb-0 font-14">
-                                    <tbody>
-                                            <!-- label -->
-                                            <tr v-for="message in messages" :key="message.id">
-                                            <td class="pl-3">
-                                                <div class="custom-control custom-checkbox">
-                                                    <input type="checkbox" class="custom-control-input" :id="message.id" />
-                                                    <label class="custom-control-label" :for="message.id">&nbsp;</label>
-                                                </div>
-                                            </td>
-                        
-                                            
-                                            <td>
-                                                <span class="mb-0 text-muted">{{ message.sender }}</span>
-                                            </td>
-                                            <!-- Message -->
-                                            <td>
-                                                <a class="link" href="javascript: void(0)">
-                                                   
-                                                    <span class="text-dark">{{ message.content }}</span>
-                                                </a>
-                                            </td>
-                                            
-                                            <!-- Time -->
-                                            <td class="text-muted">{{ message.receivedTime }}</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div> 
                 </div>
+
+                <!-- Mail list -->
+                <div class="table-responsive">
+                    <table class="table email-table no-wrap table-hover mb-0 font-14">
+                        <thead class="table-light sticky-header">
+                            <tr>
+                                <th>
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" id="checkAllBottom" v-model="selectAll" @change="toggleSelectAll" />
+                                        <label class="custom-control-label" for="checkAllBottom"> All</label>
+                                    </div>
+                                </th>
+                                <th>Sender</th>
+                                <th>Content</th>
+                                <th>Received Time</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="message in messages" :key="message.id">
+                                <td class="pl-3">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" :id="'check_' + message.id" v-model="message.selected" />
+                                        <label class="custom-control-label" :for="'check_' + message.id">&nbsp;</label>
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="mb-0 text-muted">{{ message.sender }}</span>
+                                </td>
+                                <td>
+                                    <a class="link" href="javascript:void(0)">
+                                        <span class="text-dark">{{ message.content }}</span>
+                                    </a>
+                                </td>
+                                <td class="text-muted">{{ message.receivedTime }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div> 
+        </div>
+
+        <div class="row justify-content-start mt-4">
+            <div class="col-auto">
+                <button class="btn btn-danger" @click="deleteSelectedMessages">Delete </button>
             </div>
-       
-    
-                         
+        </div>
+    </div>
 </template>
 
 <script>
 export default {
     data() {
         return {
+            selectAll: false,
             messages: [
                 {
                     id: 'M1',
                     sender: 'NAS',
                     content: 'More details in there',
-                    receivedTime: 'May 22'
+                    receivedTime: 'May 22',
+                    selected: false
                 },
                 {
                     id: 'M2',
                     sender: 'ZE PEI',
                     content: 'Your appointment for dental cleaning has been successful',
-                    receivedTime: 'May 13'
+                    receivedTime: 'May 13',
+                    selected: false
                 },
-                // ... more messages
+                
             ]
         };
     },
     methods: {
-        deleteMessage(messageId) {
-            this.messages = this.messages.filter(msg => msg.id !== messageId);
+        toggleSelectAll() {
+            this.messages.forEach(message => {
+                message.selected = this.selectAll;
+            });
+        },
+        deleteSelectedMessages() {
+            this.messages = this.messages.filter(msg => !msg.selected);
         }
     }
 }
@@ -118,6 +131,10 @@ body{
 }
 .font-light {
     font-weight: 300;
+}
+
+.email-table {
+    width: 100%;
 }
 
 </style>
