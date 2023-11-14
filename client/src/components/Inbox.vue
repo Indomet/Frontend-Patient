@@ -7,127 +7,76 @@
                 <div class="card-body text-white mailbox-widget pb-0" style=" background-color:  #567890">
                     <h2 class="text-white pb-3">Your Message</h2>
                     
-                </div>
-                <div class="tab-content" id="myTabContent">
-                    <div class="tab-pane fade active show" id="inbox" aria-labelledby="inbox-tab" role="tabpanel">
-                        <div>
-                            <div class="row p-4 no-gutters align-items-center">
-                               
-                                <div class="col-sm-12 col-md-6">
-                                    <ul class="list-inline dl mb-0 float-left float-md-right">
-                                        <li class="list-inline-item text-info mr-3">
-                                            
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
+        </div>
+                
                             <!-- Mail list-->
                             <div class="table-responsive">
                                 <table class="table email-table no-wrap table-hover v-middle mb-0 font-14">
                                     <tbody>
-                                        <!-- row -->
-                                        <tr>
                                             <!-- label -->
+                                            <tr v-for="message in messages" :key="message.id">
                                             <td class="pl-3">
                                                 <div class="custom-control custom-checkbox">
-                                                    <input type="checkbox" class="custom-control-input" id="cst1" />
-                                                    <label class="custom-control-label" for="cst1">&nbsp;</label>
+                                                    <input type="checkbox" class="custom-control-input" :id="message.id" />
+                                                    <label class="custom-control-label" :for="message.id">&nbsp;</label>
                                                 </div>
                                             </td>
-                                            <!-- star -->
-                                            <td><i class="fa fa-star text-warning"></i></td>
+                        
+                                            
                                             <td>
-                                                <span class="mb-0 text-muted">Hritik Roshan</span>
+                                                <span class="mb-0 text-muted">{{ message.sender }}</span>
                                             </td>
                                             <!-- Message -->
                                             <td>
                                                 <a class="link" href="javascript: void(0)">
                                                    
-                                                    <span class="text-dark">Lorem ipsum perspiciatis-</span>
+                                                    <span class="text-dark">{{ message.content }}</span>
                                                 </a>
                                             </td>
-                                            <!-- Attachment -->
-                                            <td><i class="fa fa-paperclip text-muted"></i></td>
+                                            
                                             <!-- Time -->
-                                            <td class="text-muted">May 13</td>
+                                            <td class="text-muted">{{ message.receivedTime }}</td>
                                         </tr>
-                                        
-                                        <!-- row -->
-                                        <tr>
-                                            <!-- label -->
-                                            <td class="pl-3">
-                                                <div class="custom-control custom-checkbox">
-                                                    <input type="checkbox" class="custom-control-input" id="cst3" />
-                                                    <label class="custom-control-label" for="cst3">&nbsp;</label>
-                                                </div>
-                                            </td>
-                                            <!-- star -->
-                                            <td><i class="fa fa-star text-warning"></i></td>
-                                            <!-- User -->
-                                            <td class="user-name max-texts">
-                                                <span class="mb-0 text-muted font-light">Ritesh Deshmukh</span>
-                                            </td>
-                                            <!-- Message -->
-                                            <td>
-                                                <a class="link" href="javascript: void(0)">
-                                                    
-                                                    <span class="font-light text-dark">Bitbucket (commit Pushed) by Ritesh</span>
-                                                </a>
-                                            </td>
-                                            <!-- Attachment -->
-                                            <td><i class="fa fa-paperclip text-muted"></i></td>
-                                            <!-- Time -->
-                                            <td class="text-muted font-light">May 13</td>
-                                        </tr>
-                                        
-                                        
-                                        
                                     </tbody>
                                 </table>
                             </div>
                         </div>
-                    </div>
-                    <div class="tab-pane fade" id="sent" aria-labelledby="sent-tab" role="tabpanel">
-                        <div class="row p-3 text-dark">
-                            <div class="col-md-6">
-                                <h3 class="font-light">Lets check profile</h3>
-                                <h4 class="font-light">you can use it with the small code</h4>
-                            </div>
-                            <div class="col-md-6 text-right">
-                                <p>Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="tab-pane fade" id="spam" aria-labelledby="spam-tab" role="tabpanel">
-                        <div class="row p-3 text-dark">
-                            <div class="col-md-6">
-                                <h3 class="font-light">Come on you have a lot message</h3>
-                                <h4 class="font-light">you can use it with the small code</h4>
-                            </div>
-                            <div class="col-md-6 text-right">
-                                <p>Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="tab-pane fade" id="delete" aria-labelledby="delete-tab" role="tabpanel">
-                        <div class="row p-3 text-dark">
-                            <div class="col-md-6">
-                                <h3 class="font-light">Just do Settings</h3>
-                                <h4 class="font-light">you can use it with the small code</h4>
-                            </div>
-                            <div class="col-md-6 text-right">
-                                <p>Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a.</p>
-                            </div>
-                        </div>
-                    </div>
+                    </div> 
                 </div>
             </div>
-        </div>
-    </div>
-</div>
+       
+    
                          
 </template>
 
+<script>
+export default {
+    data() {
+        return {
+            messages: [
+                {
+                    id: 'M1',
+                    sender: 'NAS',
+                    content: 'More details in there',
+                    receivedTime: 'May 22'
+                },
+                {
+                    id: 'M2',
+                    sender: 'ZE PEI',
+                    content: 'Your appointment for dental cleaning has been successful',
+                    receivedTime: 'May 13'
+                },
+                // ... more messages
+            ]
+        };
+    },
+    methods: {
+        deleteMessage(messageId) {
+            this.messages = this.messages.filter(msg => msg.id !== messageId);
+        }
+    }
+}
+</script>
 
 <style >
 
