@@ -52,12 +52,18 @@
             </div>
         </div>
 
-        <div v-if="selectedMessage" class="message-details">
-        <h3>Message Details</h3>
-        <p><strong>Sender:</strong> {{ selectedMessage.sender }}</p>
-        <p><strong>Content:</strong> {{ selectedMessage.content }}</p>
-        <p><strong>Received Time:</strong> {{ selectedMessage.receivedTime }}</p>
-    </div>
+      
+        <div v-if="showModal" class="modal" :style="{ display: showModal ? 'block' : 'none' }">
+            <div class="modal-content">
+                <span class="close" @click="closeModal">&times;</span>
+                <h3>Message Details</h3>
+                <p><strong>Received Time:</strong> {{ selectedMessage.receivedTime }}</p>
+                <p><strong>Sender:</strong> {{ selectedMessage.sender }}</p>
+                <p><strong>Content:</strong> {{ selectedMessage.content }}</p>
+               
+            </div>
+        </div>
+
     </div>
 </template>
 
@@ -67,6 +73,7 @@ export default {
         return {
             selectAll: false,
             selectedMessage: null,
+            showModal: false,
             messages: [
                 {
                     id: 'M1',
@@ -96,7 +103,12 @@ export default {
             this.messages = this.messages.filter(msg => !msg.selected);
         },
         showMessageDetails(message) {
-            this.selectedMessage = message;
+    console.log("showMessageDetails called with", message);
+    this.selectedMessage = message;
+    this.showModal = true;
+},
+        closeModal() {
+            this.showModal = false;
         }
     }
 }
@@ -147,5 +159,44 @@ body{
 .email-table {
     width: 100%;
 }
+
+/* for message detail */
+.modal {
+    display: block; 
+    position: fixed; 
+    z-index: 1000; 
+    left: 0;
+    top: 0;
+    width: 100%; 
+    height: 100%; 
+    overflow: auto; 
+    background-color: rgb(0,0,0); 
+    background-color: rgba(0,0,0,0.4); 
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto; 
+    padding: 25px;
+    border: 1px solid #888;
+    max-width: 800px; 
+    min-width: 300px;
+    width: 80%; 
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+ 
 
 </style>
