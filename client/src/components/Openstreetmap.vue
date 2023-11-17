@@ -1,5 +1,5 @@
 <template>
-    <div  class="container mt-5">
+    <div id="locations" class="container mt-5">
       <section class="map-header mb-1">
       <h3 >Our Locations</h3>
     </section>
