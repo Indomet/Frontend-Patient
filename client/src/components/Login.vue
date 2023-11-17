@@ -8,14 +8,14 @@
           </div>
           <div class="input-group mb-3">
             <span class="input-group-text"><i class="bi bi-person-circle"></i></span>
-            <input type="text" class="form-control" placeholder="user name" v-model="username">
+            <input type="email" class="form-control" placeholder="user email" v-model="email" required>
           </div>
           <div class="input-group mb-3">
             <span class="input-group-text"><i class="bi bi-lock-fill"></i></span>
-            <input type="password" class="form-control" placeholder="password" v-model="password">
+            <input type="password" class="form-control" placeholder="password" v-model="password" required>
           </div>
           <div class="mb-3">
-            <button style="width: 100%" class="btn btn-primary" @click="login">Log in</button>
+            <button style="width: 100%" class="btn btn-primary" @click="login" :disabled="!canLogin">Log in</button>
           </div>
           <div style="text-align: right;"><a href="/register">Sign up</a></div>
         </div>
@@ -30,15 +30,20 @@
     name: 'App',
     data() {
       return {
-        username: '',
+        email: '',
         password: ''
         
       }
     },
+    computed: {
+        canLogin() {
+            return this.email.trim() !== '' && this.password.trim() !== '';
+        }
+    },
     methods: {
       login() {
         
-        console.log('log in', this.username, this.password);
+        console.log('log in', this.email, this.password);
         
         this.$router.push('/userdashboard');
       }
