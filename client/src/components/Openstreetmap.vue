@@ -1,5 +1,12 @@
 <template>
-    <div id="map" ></div>
+    <div  class="container mt-5">
+      
+      <section class="map-header mb-5">
+      <h3 >Our Locations</h3>
+    </section>
+    <div id ="map"></div>
+    
+    </div>
 </template>
   
   <script>
@@ -8,6 +15,7 @@
   import L from 'leaflet';
   
   export default {
+    
     setup() {
       const map = ref(null);
   
@@ -30,8 +38,14 @@
   
   <style>
   #map {
-    height: 400px;
-    width:  1200px;
+    height: 600px;
+    width:  100%;
   }
+
+  .map-header {
+    background-color: rgb(211, 222, 222); /* Replace with your desired color */
+    padding: 0.5rem; /* Adjust padding as needed */
+    border-radius: 0.25rem; /* Optional: adds rounded corners */
+    }
   </style>
   
