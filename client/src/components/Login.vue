@@ -3,6 +3,7 @@
       <div style="width: 400px; margin: 100px auto; text-align: center; border: 1px solid #eee; padding: 30px 0 50px 0;
        border-radius: 10px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);">
         <div style="width: 80%; margin: 0 auto ">
+          
           <div style="margin: 30px; color: #010813">
             <h3>Log   In</h3>
           </div>
@@ -18,6 +19,7 @@
             <button style="width: 100%" class="btn btn-primary" @click="login" :disabled="!canLogin">Log in</button>
           </div>
           <div style="text-align: right;"><a href="/register">Sign up</a></div>
+        
         </div>
       </div>
     </div>
@@ -42,11 +44,26 @@
     },
     methods: {
       login() {
+
+        if (!this.isValidEmail(this.email)) {
+        alert("Please enter a valid email address.");
+          return;
+        }
+        if (this.password.length < 6) {
+        alert("Password must be at least 6 characters long.");
+          return;
+        }
         
         console.log('log in', this.email, this.password);
         
         this.$router.push('/userdashboard');
-      }
+      },
+      
+        isValidEmail(email) {
+        const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+        return emailRegex.test(email);
+        }
+     
     }
   }
   </script>
