@@ -70,16 +70,48 @@
         // use router.push Navigate to the login page
         this.$router.push('/login');
       },
-      register() {
-        const userData = {
+
+      async loginAndGetToken() {
+      try {
+        const response = await axios.post('/api/login', {
           email: this.email,
-          fname: this.fname,
-          lname: this.lname,
-          password: this.password,
-          phonenumber: this.phonenumber,
-        }
-  
-        register(userData);
+          password: this.password
+        });
+
+        const token = response.data.token; // Assuming the token is returned in this format
+        localStorage.setItem('authToken', token); // Storing the token in local storage
+        return token;
+      } catch (error) {
+        console.error('Login error:', error);
+      }
+     },
+      async register() {
+        const token = await this.loginAndGetToken(); // Get the token
+
+          if (!token) {
+            console.error('No authentication token available');
+            return;
+          }
+
+          const userData = {
+            email: this.email,
+            fname: this.fname,
+            lname: this.lname,
+            password: this.password,
+            phonenumber: this.phonenumber,
+          };
+
+          axios.post('/api/register', userData, {
+            headers: {
+              'Authorization': `Bearer ${token}` // Include the token in the request headers
+            }
+          })
+          .then(response => {
+            console.log('Registration successful:', response.data);
+          })
+          .catch(error => {
+            console.error('Registration error:', error);
+          });
         
       }
     },
