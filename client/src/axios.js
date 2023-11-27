@@ -1,4 +1,4 @@
-// axios.js
+
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 
@@ -21,5 +21,15 @@ mock.onPost('/api/login').reply(200, {
   token: 'mocked-token' ,// assum token
   message: 'login successfully'
 });
+
+mock.onPost('/api/login').reply(200, {
+  token: 'mocked-token' ,// assum token
+  message: 'Mock login successfully'
+
+});
+
+mock.onPost('/api/register').reply(200, {
+  message: 'Mock Registration successful'
+})
 
 export default axiosInstance;
