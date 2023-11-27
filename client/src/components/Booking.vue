@@ -18,10 +18,10 @@
           </select>
         </div>
         <div class="col-md-4">
-          <label for="doctorSelection" class="form-label mb-3">Doctor</label>
-          <select class="form-select" id="doctorSelection" v-model="appointment.doctor">
-            <option value="" disabled>Selection Doctor</option>
-            <option v-for="doctor in doctors" :key="doctor.id" :value="doctor.name">{{ doctor.name }}</option>
+          <label for="doctorSelection" class="form-label mb-3">Iterm</label>
+          <select class="form-select" id="doctorSelection" v-model="appointment.iterm">
+            <option value="" disabled>Selection Iterm</option>
+            <option v-for="iterm in iterms" :key="iterm.id" :value="iterm.name">{{ iterm.name }}</option>
           </select>
         </div>
         <div class="col-12 ">
@@ -33,36 +33,49 @@
   
   <script>
   import { ref } from 'vue';
+  import axios from '@/axios.js'; 
   
   export default {
     setup() {
       const appointment = ref({
         date: '',
         hospital: '',
-        doctor: ''
+        iterm: ''
       });
-  
+
       const hospitals = ref([
         { id: 1, name: 'hospitalA' },
         { id: 2, name: 'hospitalB' },
         { id: 3, name: 'hospitalC' }
       ]);
   
-      const doctors = ref([
-        { id: 1, name: 'DoctorA' },
-        { id: 2, name: 'DoctorB' },
-        { id: 3, name: 'DoctorC' }
+      const iterms = ref([
+        { id: 1, name: 'Teetch cleaning' },
+        { id: 2, name: 'Teetch extraction'},
+        { id: 3, name: 'Teetch filling'}
       ]);
+
+
   
-      function submitForm() {
+    async function submitForm() {
+      try {
+        const response = await axios.post('/submit-form', appointment.value);
+        console.log('Mocked Response:', response.data);
+        
+      } catch (error) {
+        console.error('Error submitting form:', error);
+      }
+    }
+
+      /*function submitForm() {
         console.log('booking information：', appointment.value);
         // This is where form submissions are handled, such as sending to an API or validation,
-      }
+      }*/
   
       return {
         appointment,
         hospitals,
-        doctors,
+        iterms,
         submitForm
       };
     }
@@ -72,10 +85,10 @@
   <style>
     .booking-header {
     background-color: rgb(211, 222, 222); 
-    
-    padding: 0.5rem; /* Adjust padding as needed */
-    border-radius: 0.25rem; /* Optional: adds rounded corners */
-    /*margin-bottom: 9rem;*/
+
+    padding: 0.5rem;
+    border-radius: 0.25rem; 
+  
   }
     </style>
     
