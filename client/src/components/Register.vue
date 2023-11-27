@@ -53,7 +53,7 @@
   
   
   <script>
-  import axios from '@/axios.js'; 
+  import axiosInstance from '@/axios.js'; 
   
   export default {
     data() {
@@ -80,7 +80,7 @@
               phonenumber: this.phonenumber,
             };
 
-          axios.post('/api/register', userData).then(response => {
+            axiosInstance.post('/api/register', userData).then(response => {
                 console.log('Registration successful:', response.data);
                 this.$router.push('/login');
           }).catch(error => {
