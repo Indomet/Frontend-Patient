@@ -42,6 +42,8 @@
 </template>
 
 <script>
+import axios from '@/axios.js'; 
+
 export default {
   name: 'AppointmentTable',
   data() {
@@ -58,10 +60,17 @@ export default {
   },
   methods: {
     cancelIterms(itermId) {
-      
-      this.Iterms = this.Iterms.filter(iterm => iterm.id !== itermId);
+      axios.delete(`/iterms/${itermId}`).then(response => {
+        console.log(response.data);
+        if (response.status === 200) {
+          this.Iterms = this.Iterms.filter(iterm => iterm.id !== itermId);
+        }
+      }).catch(error => {
+        console.error('Error:', error);
+      });
     },
   },
+
 };
 </script>
 
