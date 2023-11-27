@@ -10,11 +10,16 @@ const mock = new MockAdapter(axiosInstance);
 // configurate Mock Adapter
 
 mock.onDelete(new RegExp('/iterms/\\d+')).reply(200, {
-  message: 'Item cancelled successfully'
+  message: 'Appointment Item cancelled successfully'
 });
 
 mock.onPost('/submit-form').reply(200, {
   message: 'Booking Form submitted successfully'
+});
+
+mock.onPost('/api/login').reply(200, {
+  token: 'mocked-token' ,// assum token
+  message: 'login successfully'
 });
 
 mock.onPost('/api/login').reply(200, {

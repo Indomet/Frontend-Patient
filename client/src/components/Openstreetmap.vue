@@ -1,50 +1,87 @@
 <template>
-    <div id="locations" class="container mt-5">
-      <section class="map-header mb-1">
+  <div class="container mt-5">
+    <section class="map-header mb-1">
       <h3 >Our Locations</h3>
     </section>
-    <div id ="map"></div>
-    
-    </div>
+    <div id="mapContainer" ref="mapContainer" ></div>
+  </div>
 </template>
-  
-  <script>
-  import { ref, onMounted } from 'vue';
-  import 'leaflet/dist/leaflet.css';
-  import L from 'leaflet';
-  
-  export default {
-    
-    setup() {
-      const map = ref(null);
-  
-      onMounted(() => {
-        // create a  map
-        map.value = L.map('map').setView([57.7089, 11.9746], 13);
-  
-        //  add OpenStreetMap layout
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-          attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-        }).addTo(map.value);
-      });
-  
-      return {
-        map,
-      };
-    },
-  };
-  </script>
-  
-  <style>
-  #map {
-    height: 600px;
-    width:  100%;
-  }
 
-  .map-header {
-    background-color: rgb(211, 222, 222); /* Replace with your desired color */
-    padding: 0.5rem; /* Adjust padding as needed */
-    border-radius: 0.25rem; /* Optional: adds rounded corners */
+<script>
+import "/node_modules/mapbox-gl/dist/mapbox-gl.css"; // remove this later to test
+import mapboxgl from "mapbox-gl";
+import axios from "axios";
+mapboxgl.accessToken = import.meta.env.VITE_MAPBOX;
+export default {
+  data() {
+    return {
+      mapContainer: null,
+      clinicsData: [],
+    };
+  },
+  mounted() {
+    const mapContainer = new mapboxgl.Map({
+      container: this.$refs.mapContainer,
+      style: "mapbox://styles/mapbox/streets-v12",
+      center: [11.9746, 57.7089],
+      zoom: 11,
+    });
+
+    this.mapContainer = mapContainer;
+
+    this.currentLocation();
+    this.addLocation();
+  },
+  unmounted() {
+    this.mapContainer.remove();
+    this.mapContainer = null;
+  },
+  methods: {
+    async addLocation() {
+      try {
+        const response = await axios.get('http://localhost:3000/api/v1/clinics');
+        this.clinicsData = response.data.clinics;
+
+        this.clinicsData.forEach((clinic) => {
+          const popupContent = `<strong>Clinic Name:</strong> ${clinic.clinicName}<br>${clinic.location.formattedAddress}`;
+          new mapboxgl.Marker()
+            .setLngLat(clinic.location.coordinates)
+            .setPopup(new mapboxgl.Popup().setHTML(popupContent))
+            .addTo(this.mapContainer);
+        });
+      } catch (error) {
+        console.error('Error fetching clinic data:', error);
+      }
+    },
+    currentLocation() {
+      // this.mapContainer.addControl(new mapboxgl.FullscreenControl());
+      this.mapContainer.addControl(
+        new mapboxgl.GeolocateControl({
+          positionOptions: {
+            enableHighAccuracy: true
+          },
+          trackUserLocation: true,
+          showUserHeading: true
+        })
+      );
+    },
+  }
+};
+</script>
+
+
+<style scoped>
+#mapContainer {
+  display: flex;
+  height: 600px;
+  width:  100%;
+  padding: 0;
+  flex: 1;
+}
+
+.map-header {
+    background-color: rgb(211, 222, 222); 
+    padding: 0.5rem; 
+    border-radius: 0.25rem;
     }
-  </style>
-  
+</style>

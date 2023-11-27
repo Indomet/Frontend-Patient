@@ -26,8 +26,8 @@
   </template>
   
   <script>
-  
-  
+  import axiosInstance from '@/axios.js';
+
   export default {
     name: 'App',
     data() {
@@ -43,22 +43,34 @@
         }
     },
     methods: {
-      login() {
-
+      async login() {
+      try {
         if (this.password.length < 6) {
-        alert("Password must be at least 6 characters long.");
-          return;
+            alert("Password must be at least 6 characters long.");
+              return;
         }
-        
-        console.log('log in', this.email, this.password);
-        
-        this.$router.push('/userdashboard');
-      },
-      
-       
+          const response = await axiosInstance.post('/api/login', {
+            email: this.email,
+            password: this.password
+
+          });
+
+          const token = response.data.token; 
+          localStorage.setItem('authToken', token); 
+          if (response.status ===200){
+            console.log(response.data);
+          this.$router.push('/userdashboard'); }
+          return token;
+      } catch (error) {
+          console.error('Login error:', error);
+          console.log("Error details:", error.response);
     }
   }
-  </script>
+},
+      
+}
+  
+</script>
   
   <style scoped>
   .login-form {
