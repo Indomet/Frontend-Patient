@@ -43,22 +43,30 @@
         }
     },
     methods: {
-      login() {
-
+      async loginAndGetToken() {
+      try {
         if (this.password.length < 6) {
-        alert("Password must be at least 6 characters long.");
-          return;
+            alert("Password must be at least 6 characters long.");
+              return;
         }
-        
-        console.log('log in', this.email, this.password);
-        
-        this.$router.push('/userdashboard');
-      },
-      
-       
+          const response = await axios.post('/api/login', {
+            email: this.email,
+            password: this.password
+          });
+
+          const token = response.data.token; 
+          localStorage.setItem('authToken', token); 
+          this.$router.push('/userdashboard'); 
+            return token;
+      } catch (error) {
+          console.error('Login error:', error);
     }
   }
-  </script>
+},
+      
+}
+  
+</script>
   
   <style scoped>
   .login-form {
