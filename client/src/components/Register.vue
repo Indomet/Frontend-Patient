@@ -53,7 +53,7 @@
   
   
   <script>
-  
+  import axios from '@/axios.js'; 
   
   export default {
     data() {
@@ -79,44 +79,32 @@
         });
 
         const token = response.data.token; // Assuming the token is returned in this format
-        localStorage.setItem('authToken', token); // Storing the token in local storage
-        return token;
-      } catch (error) {
-        console.error('Login error:', error);
-      }
-     },
-      async register() {
-        const token = await this.loginAndGetToken(); // Get the token
+          localStorage.setItem('authToken', token); // Storing the token in local storage
+            return token;
+        }catch (error) {
+          console.error('Login error:', error);
+        }
+      },
 
-          if (!token) {
-            console.error('No authentication token available');
-            return;
-          }
+          async register() {
+            const userData = {
+              email: this.email,
+              fname: this.fname,
+              lname: this.lname,
+              password: this.password,
+              phonenumber: this.phonenumber,
+            };
 
-          const userData = {
-            email: this.email,
-            fname: this.fname,
-            lname: this.lname,
-            password: this.password,
-            phonenumber: this.phonenumber,
-          };
-
-          axios.post('/api/register', userData, {
-            headers: {
-              'Authorization': `Bearer ${token}` // Include the token in the request headers
-            }
-          })
-          .then(response => {
-            console.log('Registration successful:', response.data);
-          })
-          .catch(error => {
-            console.error('Registration error:', error);
+          axios.post('/api/register', userData).then(response => {
+                console.log('Registration successful:', response.data);
+                this.$router.push('/login');
+          }).catch(error => {
+                console.error('Registration error:', error);
           });
-        
-      }
-    },
-  };
+    }
+  },
+}
+
   
-  
-  </script>
+</script>
   
