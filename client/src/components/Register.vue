@@ -71,21 +71,6 @@
         this.$router.push('/login');
       },
 
-      async loginAndGetToken() {
-      try {
-        const response = await axios.post('/api/login', {
-          email: this.email,
-          password: this.password
-        });
-
-        const token = response.data.token; // Assuming the token is returned in this format
-          localStorage.setItem('authToken', token); // Storing the token in local storage
-            return token;
-        }catch (error) {
-          console.error('Login error:', error);
-        }
-      },
-
           async register() {
             const userData = {
               email: this.email,
