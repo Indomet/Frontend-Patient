@@ -51,7 +51,7 @@
      }
   
      function redirectToSignUp() {
-       router.push('/signup');
+       router.push('/register');
      }
   
      function logout() {

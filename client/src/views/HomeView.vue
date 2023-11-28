@@ -9,14 +9,14 @@
 </script>
 
 <template>
-  <Navigation />
-   <main >
-    <Homepage />
-    <Ourservice />
-    <Booking />
-    <Openstreetmap />
-    <Aboutus />
-      
-    </main>
-  
+    <div>
+        <Navigation />
+        <main>
+            <Homepage />
+            <Ourservice />
+            <Booking />
+            <Openstreetmap />
+            <Aboutus />
+        </main>
+    </div>
 </template>

@@ -53,7 +53,7 @@
   
   
   <script>
-  
+  import axiosInstance from '@/axios.js'; 
   
   export default {
     data() {
@@ -70,21 +70,26 @@
         // use router.push Navigate to the login page
         this.$router.push('/login');
       },
-      register() {
-        const userData = {
-          email: this.email,
-          fname: this.fname,
-          lname: this.lname,
-          password: this.password,
-          phonenumber: this.phonenumber,
-        }
+
+          async register() {
+            const userData = {
+              email: this.email,
+              fname: this.fname,
+              lname: this.lname,
+              password: this.password,
+              phonenumber: this.phonenumber,
+            };
+
+            axiosInstance.post('/api/register', userData).then(response => {
+                console.log('Registration successful:', response.data);
+                this.$router.push('/login');
+          }).catch(error => {
+                console.error('Registration error:', error);
+          });
+    }
+  },
+}
+
   
-        register(userData);
-        
-      }
-    },
-  };
-  
-  
-  </script>
+</script>
   
