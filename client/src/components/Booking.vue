@@ -1,34 +1,53 @@
 <template>
     <div id = "bookings" class="container mt-5">
-      
       <section class="booking-header mb-5">
-      <h3 >Booking</h3>
-    </section>
+      <h3 >Booking</h3></section>
+
+    <div class="row">
+      <div class="col-md-6">
       <form @submit.prevent="submitForm" class="row g-3 mb-5">
-        <div class="col-md-4 mb-5">
+        <div class="mb-3">
           <label for="appointmentDate" class="form-label mb-3"> Date</label>
-          
-          <input type="date" class="form-control" id="appointmentDate" v-model="appointment.date">
+          <input type="date" class="form-control" id="appointmentDate" v-model="appointment.date" required>
         </div>
-        <div class="col-md-4">
+
+        <div class="mb-3">
+          <label for="timeSelection" class="form-label mb-3">Time</label>
+          <select class="form-select" id="timeSelection" v-model="appointment.time" required>
+            <option value="" disabled>Selection Time</option>
+            <option v-for="time in times" :key="time.id" :value="time.name">{{ time.name }}</option>
+          </select>
+        </div>
+
+        <div class="mb-3">
           <label for="hospitalSelection" class="form-label mb-3">Clinic</label>
-          <select class="form-select" id="hospitalSelection" v-model="appointment.hospital">
+          <select class="form-select" id="hospitalSelection" v-model="appointment.hospital" required>
             <option value="" disabled>Selection Clinic</option>
             <option v-for="hospital in hospitals" :key="hospital.id" :value="hospital.name">{{ hospital.name }}</option>
           </select>
         </div>
-        <div class="col-md-4">
-          <label for="doctorSelection" class="form-label mb-3">Iterm</label>
-          <select class="form-select" id="doctorSelection" v-model="appointment.iterm">
-            <option value="" disabled>Selection Iterm</option>
-            <option v-for="iterm in iterms" :key="iterm.id" :value="iterm.name">{{ iterm.name }}</option>
-          </select>
+
+        <div class="mb-3">
+          <label for="messageInput" class="form-label mb-3">Message</label>
+            <textarea class="form-control" id="messageInput" v-model="appointment.message" rows="3" >
+            </textarea>
         </div>
+
+       
+        
         <div class="col-12 ">
           <button type="submit" class="btn btn-primary mb-3" style="width: 120px;">Submit</button>
         </div>
       </form>
+      </div>
+
+      <div class="col-md-6">
+                <img src="@/assets/sign.jpg" class=" img-fluid image-margin" alt="Dental" >
+      </div>
     </div>
+  </div>
+
+  
   </template>
   
   <script>
@@ -40,7 +59,9 @@
       const appointment = ref({
         date: '',
         hospital: '',
-        iterm: ''
+        time: '',
+        message: ''
+       
       });
 
       const hospitals = ref([
@@ -48,15 +69,16 @@
         { id: 2, name: 'hospitalB' },
         { id: 3, name: 'hospitalC' }
       ]);
-  
-      const iterms = ref([
-        { id: 1, name: 'Teetch cleaning' },
-        { id: 2, name: 'Teetch extraction'},
-        { id: 3, name: 'Teetch filling'}
-      ]);
+      function generateTimes() {
+        const times = [];
+          for (let hour = 8; hour < 18; hour++) { 
+            times.push({ id: hour, name: `${hour}:00` });
+          }
+            return times;
+      }
+        const times = ref(generateTimes());
 
 
-  
     async function submitForm() {
       try {
         const response = await axios.post('/submit-form', appointment.value);
@@ -75,7 +97,8 @@
       return {
         appointment,
         hospitals,
-        iterms,
+        times,
+        
         submitForm
       };
     }
@@ -90,6 +113,10 @@
     border-radius: 0.25rem; 
   
   }
+
+  .image-margin {
+  margin-top: 38px; 
+}
     </style>
     
   
