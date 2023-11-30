@@ -1,17 +1,17 @@
 <template>
     <div id = "bookings" class="container mt-5">
-      
       <section class="booking-header mb-5">
-      <h3 >Booking</h3>
-    </section>
+      <h3 >Booking</h3></section>
+
+    <div class="row">
+      <div class="col-md-6">
       <form @submit.prevent="submitForm" class="row g-3 mb-5">
-        <div class="col-md-6 mb-5">
+        <div class="mb-3">
           <label for="appointmentDate" class="form-label mb-3"> Date</label>
-          
           <input type="date" class="form-control" id="appointmentDate" v-model="appointment.date" required>
         </div>
 
-        <div class="col-md-6">
+        <div class="mb-3">
           <label for="timeSelection" class="form-label mb-3">Time</label>
           <select class="form-select" id="timeSelection" v-model="appointment.time" required>
             <option value="" disabled>Selection Time</option>
@@ -19,7 +19,7 @@
           </select>
         </div>
 
-        <div class="col-md-6">
+        <div class="mb-3">
           <label for="hospitalSelection" class="form-label mb-3">Clinic</label>
           <select class="form-select" id="hospitalSelection" v-model="appointment.hospital" required>
             <option value="" disabled>Selection Clinic</option>
@@ -27,7 +27,7 @@
           </select>
         </div>
 
-        <div class="col-md-6">
+        <div class="mb-3">
           <label for="messageInput" class="form-label mb-3">Message</label>
             <textarea class="form-control" id="messageInput" v-model="appointment.message" rows="3" >
             </textarea>
@@ -39,7 +39,15 @@
           <button type="submit" class="btn btn-primary mb-3" style="width: 120px;">Submit</button>
         </div>
       </form>
+      </div>
+
+      <div class="col-md-6">
+                <img src="@/assets/sign.jpg" class=" img-fluid image-margin" alt="Dental" >
+      </div>
     </div>
+  </div>
+
+  
   </template>
   
   <script>
@@ -90,7 +98,6 @@
         appointment,
         hospitals,
         times,
-        message,
         
         submitForm
       };
@@ -106,6 +113,10 @@
     border-radius: 0.25rem; 
   
   }
+
+  .image-margin {
+  margin-top: 38px; 
+}
     </style>
     
   
