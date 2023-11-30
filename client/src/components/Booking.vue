@@ -5,13 +5,13 @@
       <h3 >Booking</h3>
     </section>
       <form @submit.prevent="submitForm" class="row g-3 mb-5">
-        <div class="col-md-4 mb-5">
+        <div class="col-md-6 mb-5">
           <label for="appointmentDate" class="form-label mb-3"> Date</label>
           
           <input type="date" class="form-control" id="appointmentDate" v-model="appointment.date" required>
         </div>
 
-        <div class="col-md-4">
+        <div class="col-md-6">
           <label for="timeSelection" class="form-label mb-3">Time</label>
           <select class="form-select" id="timeSelection" v-model="appointment.time" required>
             <option value="" disabled>Selection Time</option>
@@ -19,13 +19,21 @@
           </select>
         </div>
 
-        <div class="col-md-4">
+        <div class="col-md-6">
           <label for="hospitalSelection" class="form-label mb-3">Clinic</label>
           <select class="form-select" id="hospitalSelection" v-model="appointment.hospital" required>
             <option value="" disabled>Selection Clinic</option>
             <option v-for="hospital in hospitals" :key="hospital.id" :value="hospital.name">{{ hospital.name }}</option>
           </select>
         </div>
+
+        <div class="col-md-6">
+          <label for="messageInput" class="form-label mb-3">Message</label>
+            <textarea class="form-control" id="messageInput" v-model="appointment.message" rows="3" >
+            </textarea>
+        </div>
+
+       
         
         <div class="col-12 ">
           <button type="submit" class="btn btn-primary mb-3" style="width: 120px;">Submit</button>
@@ -43,7 +51,9 @@
       const appointment = ref({
         date: '',
         hospital: '',
-        time: ''
+        time: '',
+        message: ''
+       
       });
 
       const hospitals = ref([
@@ -80,6 +90,8 @@
         appointment,
         hospitals,
         times,
+        message,
+        
         submitForm
       };
     }
