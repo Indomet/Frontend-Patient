@@ -27,8 +27,8 @@ mock.onPost('/api/register').reply(200, {
   message: 'Mock Registration successful'
 });
 
-mock.onGet('api/users/profile').reply(200, {
-  users: [{ email: 'luhui930@126.com', fname: 'John ',lname:'Smith',phone:'0703333232' }]
+mock.onGet('/api/user/profile').reply(200, {
+  email: 'luhui930@126.com', password :'123455',fname: 'John ',lname:'Smith',phone:'0703333232' 
 });
 
 

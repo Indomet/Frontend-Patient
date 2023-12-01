@@ -20,30 +20,31 @@
                         <div class="col-md-12">
                             <label class="labels">User Email</label>
                             <span class="required">*</span>
-                            <input type="email" class="form-control" placeholder="email" value="" v-model="user.email" required>
+                            <input type="email" class="form-control" placeholder="email"  v-model="user.email" required>
                         </div>
                         
                         <div class="col-md-12"><label class="labels">Password</label>
                             <span class="required">*</span>
-                            <input type="password" class="form-control" placeholder="password  (at least 6 digits)" value="" 
+                            <input type="password" class="form-control" placeholder="password  (at least 6 digits)" 
                             v-model="user.password" required>
                         </div>
 
                         <div class="col-md-12"><label class="labels">Frist Name</label>
-                            <input type="text" class="form-control" placeholder="frist name" value="" v-model="user.fname">
+                            <input type="text" class="form-control" placeholder="frist name"  v-model="user.fname">
                         </div>
 
                         <div class="col-md-12"><label class="labels">Last Name</label>
-                            <input type="text" class="form-control" placeholder="last name" value="" v-model="user.lname">
+                            <input type="text" class="form-control" placeholder="last name"  v-model="user.lname">
                         </div>
 
                         <div class="col-md-12"><label class="labels">Mobile Number</label>
-                            <input type="text" class="form-control" placeholder="phone number" value="" v-model="user.phone">
+                            <input type="text" class="form-control" placeholder="phone number" v-model="user.phone">
                         </div>
                         
                     </div>
                     
-                    <div class="mt-5 text-center"><button class="btn btn-primary profile-button" type="button">Save Profile</button></div>
+                    <div class="mt-5 text-center"><button class="btn btn-primary profile-button" type="button" 
+                        @click="saveProfile">Save Profile</button></div>
                 </div>
             </div>
             
@@ -69,17 +70,17 @@ export default {
             },
         };
     },
-    methods: {
-        async saveProfile() {
+     async mounted() {
             try {
                 const token = localStorage.getItem('authToken');
-                const response = await axiosInstance.get('/api/user/profile', this.user, {
+                const response = await axiosInstance.get('/api/user/profile', {
                     headers: {
                         Authorization: `Bearer ${token}`
                     }
                 });
 
                 if (response.status === 200) {
+                    this.user = response.data;
                     console.log('Profile updated successfully');
                 }
             } catch (error) {
@@ -87,7 +88,7 @@ export default {
             }
         }
     }
-}
+
 </script>
     
 <style>
