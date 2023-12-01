@@ -42,6 +42,7 @@
             return this.email.trim() !== '' && this.password.trim() !== '';
         }
     },
+
     methods: {
       async login() {
       try {
@@ -56,14 +57,15 @@
           });
 
           const token = response.data.token; 
+          console.log('authToken:', token);
           localStorage.setItem('authToken', token); 
+
           if (response.status ===200){
             console.log(response.data);
-          this.$router.push('/userdashboard'); }
-          return token;
-      } catch (error) {
-          console.error('Login error:', error);
-          console.log("Error details:", error.response);
+          this.$router.push('/userdashboard'); } 
+        } catch (error) {
+            console.error('Login error:', error);
+            console.log("Error details:", error.response);
     }
   }
 },
