@@ -1,46 +1,108 @@
 <template>
+    <div class="m-3">
+        <div class="mb-4">
+            <div class="card">
+                <div class="card-body text-white mailbox-widget pb-0" style="background-color: #567890">
+                    <h2 class="text-white pb-3">Profile Setting</h2>
+                </div>
     <div class="container rounded bg-white mt-5 mb-5">
         <div class="row">
             <div class="col-md-3 border-right">
                 <div class="d-flex flex-column align-items-center text-center p-3 py-5">
                     <img class="rounded-circle mt-5" width="150px" src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg">
-                    <span class="font-weight-bold">Edogaru</span><span class="text-black-50">edogaru@mail.com.my</span><span> 
-                    </span></div>
+                    <span class="font-weight-bold"><p>{{ user.fname }} {{ user.lname }}</p></span>
+                    <span class="text-black-50">{{ user.email }}</span>
+                </div>
             </div>
             <div class="col-md-5 border-right">
                 <div class="p-3 py-5">
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <h4 class="text-right">Profile Settings</h4>
-                    </div>
-                    <div class="row mt-2">
-                        <div class="col-md-6"><label class="labels">Name</label><input type="text" class="form-control" placeholder="first name" value=""></div>
-                        <div class="col-md-6"><label class="labels">Surname</label><input type="text" class="form-control" value="" placeholder="surname"></div>
-                    </div>
                     <div class="row mt-3">
-                        <div class="col-md-12"><label class="labels">Mobile Number</label><input type="text" class="form-control" placeholder="enter phone number" value=""></div>
-                        <div class="col-md-12"><label class="labels">Address Line 1</label><input type="text" class="form-control" placeholder="enter address line 1" value=""></div>
-                        <div class="col-md-12"><label class="labels">Address Line 2</label><input type="text" class="form-control" placeholder="enter address line 2" value=""></div>
-                        <div class="col-md-12"><label class="labels">Postcode</label><input type="text" class="form-control" placeholder="enter address line 2" value=""></div>
-                        <div class="col-md-12"><label class="labels">State</label><input type="text" class="form-control" placeholder="enter address line 2" value=""></div>
-                        <div class="col-md-12"><label class="labels">Area</label><input type="text" class="form-control" placeholder="enter address line 2" value=""></div>
-                        <div class="col-md-12"><label class="labels">Email ID</label><input type="text" class="form-control" placeholder="enter email id" value=""></div>
-                        <div class="col-md-12"><label class="labels">Education</label><input type="text" class="form-control" placeholder="education" value=""></div>
+                        <div class="col-md-12">
+                            <label class="labels">User Email</label>
+                            <span class="required">*</span>
+                            <input type="email" class="form-control" placeholder="email"  v-model="user.email" required>
+                        </div>
+                        
+                        <div class="col-md-12"><label class="labels">Password</label>
+                            <span class="required">*</span>
+                            <input type="password" class="form-control" placeholder="password  (at least 6 digits)" 
+                            v-model="user.password" required>
+                        </div>
+
+                        <div class="col-md-12"><label class="labels">Frist Name</label>
+                            <input type="text" class="form-control" placeholder="frist name"  v-model="user.fname">
+                        </div>
+
+                        <div class="col-md-12"><label class="labels">Last Name</label>
+                            <input type="text" class="form-control" placeholder="last name"  v-model="user.lname">
+                        </div>
+
+                        <div class="col-md-12"><label class="labels">Mobile Number</label>
+                            <input type="text" class="form-control" placeholder="phone number" v-model="user.phone">
+                        </div>
+                        
                     </div>
                     
-                    <div class="mt-5 text-center"><button class="btn btn-primary profile-button" type="button">Save Profile</button></div>
+                    <div class="mt-5 text-center"><button class="btn btn-primary profile-button" type="button" 
+                        @click="saveProfile">Save Profile</button></div>
                 </div>
             </div>
             
         </div>
     </div>
+</div>
+</div>
+</div>
     
-    
-    </template>
-    
-    <style>
-    .labels {
-        font-size: 11px
+</template>
+
+<script>
+import axiosInstance from '@/axios.js';
+export default {
+    data() {
+        return {
+            user: {
+                email: '',
+                password: '',
+                fname: '',
+                lname: '',
+                phone: ''
+            },
+        };
+    },
+     async mounted() {
+            try {
+                const token = localStorage.getItem('authToken');
+                const response = await axiosInstance.get('/api/user/profile', {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                });
+
+                if (response.status === 200) {
+                    this.user = response.data;
+                    console.log('Profile updated successfully');
+                }
+            } catch (error) {
+                console.error('Error updating profile:', error);
+            }
+        }
     }
+
+</script>
     
+<style>
+    .labels {
+        font-size: 16px
+    }
+
+    .form-control {
     
-    </style>
+    margin-bottom: 25px; 
+}
+
+.required {
+    color: red; 
+}
+    
+</style>
