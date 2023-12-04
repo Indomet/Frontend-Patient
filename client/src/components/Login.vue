@@ -1,76 +1,95 @@
 <template>
-    <div id="app">
-      <div class="login-form">
-        <form @submit.prevent="login">
-          <div class="form-inner" style="margin: 30px; color: #010813">
-            <h3>Log In</h3>
-            
-          </div>
-          <div class="input-group mb-3" style="width: 80%; margin: 0 auto ">
-            <span class="input-group-text"><i class="bi bi-person-circle"></i></span>
-            <input type="email" class="form-control" placeholder="user email" v-model="email" required>
-          </div>
-          <div class="input-group mb-3" style="width: 80%; margin: 0 auto ">
-            <span class="input-group-text"><i class="bi bi-lock-fill"></i></span>
-            <input type="password" class="form-control" placeholder="password" v-model="password" required>
-          </div>
-          <div class="mb-3">
-            <button style="width: 80%; margin: 0 auto " type="submit" class="btn btn-primary" :disabled="!canLogin">Log in</button>  
-          </div>
+  <div id="app">
+    <div class="login-form">
+      <form @submit.prevent="login">
+        <div class="form-inner" style="margin: 30px; color: #010813">
+          <h3>Log In</h3>
+        </div>
+        <div class="input-group mb-3" style="width: 80%; margin: 0 auto">
+          <span class="input-group-text"
+            ><i class="bi bi-person-circle"></i
+          ></span>
+          <input
+            type="email"
+            class="form-control"
+            placeholder="user email"
+            v-model="email"
+            required
+          />
+        </div>
+        <div class="input-group mb-3" style="width: 80%; margin: 0 auto">
+          <span class="input-group-text"><i class="bi bi-lock-fill"></i></span>
+          <input
+            type="password"
+            class="form-control"
+            placeholder="password"
+            v-model="password"
+            required
+          />
+        </div>
+        <div class="mb-3">
+          <button
+            style="width: 80%; margin: 0 auto"
+            type="submit"
+            class="btn btn-primary"
+            :disabled="!canLogin"
+          >
+            Log in
+          </button>
+        </div>
       </form>
         <div class="signup-link" > <a href="/register" >Sign up</a>
       </div>
     </div>
   </div>
-  </template>
+</template>
   
   <script>
-  import axiosInstance from '@/axios.js';
+//import axiosInstance from "@/axios.js";
+import axios from 'axios';
 
-  export default {
-    name: 'App',
-    data() {
-      return {
-        email: '',
-        password: ''
-        
-      }
+export default {
+  name: "App",
+  data() {
+    return {
+      email: "",
+      password: "",
+    };
+  },
+  computed: {
+    canLogin() {
+      return this.email.trim() !== "" && this.password.trim() !== "";
     },
-    computed: {
-        canLogin() {
-            return this.email.trim() !== '' && this.password.trim() !== '';
-        }
-    },
+  },
 
-    methods: {
-      async login() {
+  methods: {
+    async login() {
       try {
         if (this.password.length < 6) {
-            alert("Password must be at least 6 characters long.");
-              return;
+          alert("Password must be at least 6 characters long.");
+          return;
         }
-          const response = await axiosInstance.post('/api/login', {
-            email: this.email,
-            password: this.password
+        const response = await axios.post('http://localhost:8000/patient/login/', {
+          email: this.email,
+          password: this.password,
+        });
 
-          });
+        if (response.status === 200) {
+          const token = response.data.token;
+          console.log("authToken:", token);
 
-          const token = response.data.token; 
-          console.log('authToken:', token);
-          localStorage.setItem('authToken', token); 
-
-          if (response.status ===200){
-            console.log(response.data);
-          this.$router.push('/userdashboard'); } 
-        } catch (error) {
-            console.error('Login error:', error);
-            console.log("Error details:", error.response);
-    }
-  }
-},
-      
-}
-  
+          localStorage.setItem("authToken", token);
+          console.log(response.data);
+          
+          this.$router.push("/userdashboard");
+        }
+      } catch (error) {
+        console.error("Login error:", error);
+        console.log("Error details:", error.response);
+      }
+    },
+  },
+};
 </script>
   
   <style scoped>
@@ -106,6 +125,7 @@
     margin: 20px;
     }
   }
-  </style>
+}
+</style>
   
   

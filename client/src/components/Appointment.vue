@@ -16,9 +16,9 @@
             <th scope="col">#</th>
             <th scope="col">Date</th>
             <th scope="col">Time</th>
-            <th scope="col">Item</th>
+            <th scope="col">Clinic</th>
             <th scope="col">Address</th>
-            <th scope="col">Doctor</th>
+            <th scope="col">Message</th>
             <th scope="col">Actions</th>
           </tr>
         </thead>
@@ -27,9 +27,9 @@
             <th scope="row">{{ index + 1 }}</th>
             <td>{{ iterm.date }}</td>
             <td>{{ iterm.time }}</td>
-            <td>{{ iterm.item }}</td>
+            <td>{{ iterm.clinic }}</td>
             <td>{{ iterm.address }}</td>
-            <td>{{ iterm.doctor }}</td>
+            <td>{{ iterm.message }}</td>
             
             <td>
               <button class="btn btn-danger" @click="cancelIterms(iterm.id)">Cancel</button>
@@ -42,23 +42,40 @@
 </template>
 
 <script>
-import axios from '@/axios.js'; 
+import axios from 'axios'; 
 
 export default {
   name: 'AppointmentTable',
   data() {
     return {
-      Iterms: [
-        { id: 1, date: '2023-12-25', time: '08:50' ,item:'toothwash',address:'lindholmen A', doctor:'jack'},
-        { id: 2, date: '2024-02-25', time: '10:30' ,item:'toothwash',address:'lindholmen B', doctor:'ikckqq'},
-        { id: 3, date: '2023-02-11', time: '09:50' ,item:'toothwash',address:'lindholmen 110', doctor:'mack'},
-        { id: 4, date: '2023-03-05', time: '12:10' ,item:'toothwash',address:'lindholmen 78', doctor:'lmnack'},
-
-   
-      ],
+      Iterms: [],
+      // showBoookings: true,
     };
   },
+  mounted() {
+    this.fetchIterms(); 
+  },
   methods: {
+    async fetchIterms() {
+  try {
+    const token = localStorage.getItem('authToken');
+    const response = await axios.get('/api/user/booking', {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+
+    if (response.status === 200 && response.data.Iterms) {
+      this.Iterms = response.data.Iterms;
+      // this.showBoookings = false;
+      console.log(this.Iterms);
+    }
+  } catch (error) {
+    console.error('Error bookings', error);
+    // this.showBoookings = false;
+  }
+},
+  
     cancelIterms(itermId) {
       axios.delete(`/iterms/${itermId}`).then(response => {
         console.log(response.data);
@@ -69,9 +86,10 @@ export default {
         console.error('Error:', error);
       });
     },
-  },
+  
+  }
+}
 
-};
 </script>
 
 <style>
