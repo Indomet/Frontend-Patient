@@ -21,21 +21,21 @@
                 <label for="floatingPassword">Password</label>
               </div>
               <div class="form-floating mb-3">
-                <input type="text" v-model="fname" class="form-control rounded-3" id="floatingInput"
+                <input type="text" v-model="first_name" class="form-control rounded-3" id="floatingInput"
                   placeholder="First name">
                 <label for="floatingInput">First name</label>
-              </div>
+              </div> 
               <div class="form-floating mb-3">
-                <input type="text" v-model="lname" class="form-control rounded-3" id="floatingInput"
+                <input type="text" v-model="last_name" class="form-control rounded-3" id="floatingInput"
                   placeholder="Last name">
                 <label for="floatingInput">Last name</label>
               </div>
               <div class="form-floating mb-3">
-                <input type="num" v-model="phonenumber" class="form-control rounded-3" id="floatingInput"
+                <input type="num" v-model="phone_number" class="form-control rounded-3" id="floatingInput"
                   placeholder="Telphone Number">
                 <label for="floatingInput">Telphone Number</label>
               </div>
-              <button class="w-100 mb-2 btn btn-lg rounded-3 btn-primary" type="submit">Sign up</button>
+              <button class="w-100 mb-2 btn btn-lg rounded-3 btn-primary" type="submit" >Sign up</button>
               <small class="text-body-secondary">By clicking Sign up, you agree to the terms of use.</small>
               <hr class="my-4">
               <h2 class="fs-5 fw-normal mb-3">Already have an account</h2>
@@ -53,16 +53,18 @@
   
   
   <script>
-  import axiosInstance from '@/axios.js'; 
+  //import axiosInstance from '@/axios.js'; 
+  import axios from 'axios'; 
   
   export default {
     data() {
       return {
         email: '',
-        fname: '',
-        lname: '',
+        first_name: '',
+        last_name: '',
         password: '',
-        phonenumber: ''
+        phone_number: ''
+        
       }
     },
     methods: {
@@ -71,22 +73,36 @@
         this.$router.push('/login');
       },
 
-          async register() {
-            const userData = {
-              email: this.email,
-              fname: this.fname,
-              lname: this.lname,
-              password: this.password,
-              phonenumber: this.phonenumber,
-            };
+  async register() {
+  const userData = {
+    email: this.email,
+    first_name: this.first_name,
+    last_name: this.last_name,
+    password: this.password,
+    phone_number: this.phone_number,
+  };
 
-            axiosInstance.post('/api/register', userData).then(response => {
-                console.log('Registration successful:', response.data);
-                this.$router.push('/login');
-          }).catch(error => {
-                console.error('Registration error:', error);
-          });
+  try {
+    const response = await axios.post('http://localhost:8000/api/v1/patients/', userData);
+    console.log('Registration successful:', response.data);
+    this.redirectToLogin();
+  } catch (error) {
+    if (error.response) {
+      // The request was made and the server responded with a status code
+      // that falls out of the range of 2xx
+      console.log(error.response.data);
+      console.log(error.response.status);
+      console.log(error.response.headers);
+      // Here you can add a user-friendly error message or action
+    } else if (error.request) {
+      // The request was made but no response was received
+      console.log(error.request);
+    } else {
+      // Something happened in setting up the request that triggered an Error
+      console.log('Error', error.message);
     }
+  }
+}
   },
 }
 
