@@ -30,15 +30,15 @@
                         </div>
 
                         <div class="col-md-12"><label class="labels">Frist Name</label>
-                            <input type="text" class="form-control" placeholder="frist name"  v-model="user.fname">
+                            <input type="text" class="form-control" placeholder="frist name"  v-model="user.first_name">
                         </div>
 
                         <div class="col-md-12"><label class="labels">Last Name</label>
-                            <input type="text" class="form-control" placeholder="last name"  v-model="user.lname">
+                            <input type="text" class="form-control" placeholder="last name"  v-model="user.last_name">
                         </div>
 
                         <div class="col-md-12"><label class="labels">Mobile Number</label>
-                            <input type="text" class="form-control" placeholder="phone number" v-model="user.phone">
+                            <input type="text" class="form-control" placeholder="phone number" v-model="user.phone_number">
                         </div>
                         
                     </div>
@@ -57,16 +57,17 @@
 </template>
 
 <script>
-import axiosInstance from '@/axios.js';
+//import axiosInstance from '@/axios.js';
+import axiosInstance from 'axios';
 export default {
     data() {
         return {
             user: {
                 email: '',
                 password: '',
-                fname: '',
-                lname: '',
-                phone: ''
+                first_name: '',
+                last_name: '',
+                phone_number: ''
             },
         };
     },

@@ -20,10 +20,10 @@
         </div>
 
         <div class="mb-3">
-          <label for="hospitalSelection" class="form-label mb-3">Clinic</label>
-          <select class="form-select" id="hospitalSelection" v-model="appointment.hospital" required>
+          <label for="clinicSelection" class="form-label mb-3">Clinic</label>
+          <select class="form-select" id="cliniclSelection" v-model="appointment.clinic" required>
             <option value="" disabled>Selection Clinic</option>
-            <option v-for="hospital in hospitals" :key="hospital.id" :value="hospital.name">{{ hospital.name }}</option>
+            <option v-for="clinic in clinics" :key="clinic.id" :value="clinic.name">{{ clinic.name }}</option>
           </select>
         </div>
 
@@ -51,38 +51,42 @@
   </template>
   
   <script>
-  import { ref } from 'vue';
-  import axios from '@/axios.js'; 
+  import { ref ,onMounted } from 'vue';
+  import axios from 'axios'; 
   
   export default {
     setup() {
       const appointment = ref({
         date: '',
-        hospital: '',
+        clinic: '',
         time: '',
         message: ''
        
       });
 
-      const hospitals = ref([
-        { id: 1, name: 'hospitalA' },
-        { id: 2, name: 'hospitalB' },
-        { id: 3, name: 'hospitalC' }
-      ]);
-      function generateTimes() {
-        const times = [];
-          for (let hour = 8; hour < 18; hour++) { 
-            times.push({ id: hour, name: `${hour}:00` });
-          }
-            return times;
+      const clinics = ref([]);
+      const times = ref([]);
+      const message = ref([]);
+
+    // Fetch data from backend
+    const fetchData = async () => {
+      try {
+        console.log('Attempting to get bookings from backend')
+        const response = await axios.get('http://localhost:8081/api/v1/bookings/');
+        console.log(response)
+
+        clinics.value = response.data.dentistName;
+        times.value = response.data.time;
+        message.value = response.data.message;
+      } catch (error) {
+        console.error('Error fetching data:', error);
       }
-        const times = ref(generateTimes());
-
-
+    };
+    onMounted(fetchData);
     async function submitForm() {
       try {
-        const response = await axios.post('/submit-form', appointment.value);
-        console.log('Mocked Response:', response.data);
+        const response = await axios.post(`http://localhost:8081/api/v1/bookings/${booking._id}`, appointment.value);
+        console.log('submitForm Response:', response.data);
         
       } catch (error) {
         console.error('Error submitting form:', error);
@@ -96,9 +100,9 @@
   
       return {
         appointment,
-        hospitals,
+        clinics,
         times,
-        
+        message,
         submitForm
       };
     }
