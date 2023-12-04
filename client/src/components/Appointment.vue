@@ -42,14 +42,14 @@
 </template>
 
 <script>
-import axios from '@/axios.js'; 
+import axios from 'axios'; 
 
 export default {
   name: 'AppointmentTable',
   data() {
     return {
       Iterms: [],
-      showBoookings: true,
+      // showBoookings: true,
     };
   },
   mounted() {
@@ -67,12 +67,12 @@ export default {
 
     if (response.status === 200 && response.data.Iterms) {
       this.Iterms = response.data.Iterms;
-      this.showBoookings = false;
+      // this.showBoookings = false;
       console.log(this.Iterms);
     }
   } catch (error) {
     console.error('Error bookings', error);
-    this.showBoookings = false;
+    // this.showBoookings = false;
   }
 },
   
