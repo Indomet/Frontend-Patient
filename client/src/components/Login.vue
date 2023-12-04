@@ -38,8 +38,7 @@
           </button>
         </div>
       </form>
-      <div class="signup-link">
-        <a href="/register">Sign up</a>
+        <div class="signup-link" > <a href="/register" >Sign up</a>
       </div>
     </div>
   </div>
@@ -94,18 +93,22 @@ export default {
 </script>
   
   <style scoped>
-.login-form {
-  width: 450px;
-  margin: 100px auto;
-  text-align: center;
-  border: 1px solid #eee;
-  padding: 30px 0 50px 0;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-}
+  .login-form {
+    width: 450px;
+    margin: 100px auto;
+    text-align: center;
+    border: 1px solid #eee;
+    padding: 30px 0 50px 0;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  }
 .signup-link {
   margin-left: 280px;
 }
+.input-group-text, .form-control {
+  height: 44px; 
+}
+
 #app {
   display: flex;
   justify-content: center;
@@ -120,6 +123,7 @@ export default {
   .login-box {
     padding: 20px;
     margin: 20px;
+    }
   }
 }
 </style>
