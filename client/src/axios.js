@@ -1,4 +1,4 @@
-
+/*
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 
@@ -42,3 +42,4 @@ mock.onGet('/api/user/booking').reply(200, {
 
 
 export default axiosInstance;
+*/
