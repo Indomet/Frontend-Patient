@@ -1,68 +1,108 @@
 <template>
     <div id = "bookings" class="container mt-5">
-      
       <section class="booking-header mb-5">
-      <h3 >Booking</h3>
-    </section>
+      <h3 >Booking</h3></section>
+
+    <div class="row">
+      <div class="col-md-6">
       <form @submit.prevent="submitForm" class="row g-3 mb-5">
-        <div class="col-md-4 mb-5">
+        <div class="mb-3">
           <label for="appointmentDate" class="form-label mb-3"> Date</label>
-          
-          <input type="date" class="form-control" id="appointmentDate" v-model="appointment.date">
+          <input type="date" class="form-control" id="appointmentDate" v-model="appointment.date" required>
         </div>
-        <div class="col-md-4">
-          <label for="hospitalSelection" class="form-label mb-3">Clinic</label>
-          <select class="form-select" id="hospitalSelection" v-model="appointment.hospital">
+
+        <div class="mb-3">
+          <label for="timeSelection" class="form-label mb-3">Time</label>
+          <select class="form-select" id="timeSelection" v-model="appointment.time" required>
+            <option value="" disabled>Selection Time</option>
+            <option v-for="time in times" :key="time.id" :value="time.name">{{ time.name }}</option>
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label for="clinicSelection" class="form-label mb-3">Clinic</label>
+          <select class="form-select" id="cliniclSelection" v-model="appointment.clinic" required>
             <option value="" disabled>Selection Clinic</option>
-            <option v-for="hospital in hospitals" :key="hospital.id" :value="hospital.name">{{ hospital.name }}</option>
+            <option v-for="clinic in clinics" :key="clinic.id" :value="clinic.name">{{ clinic.name }}</option>
           </select>
         </div>
-        <div class="col-md-4">
-          <label for="doctorSelection" class="form-label mb-3">Doctor</label>
-          <select class="form-select" id="doctorSelection" v-model="appointment.doctor">
-            <option value="" disabled>Selection Doctor</option>
-            <option v-for="doctor in doctors" :key="doctor.id" :value="doctor.name">{{ doctor.name }}</option>
-          </select>
+
+        <div class="mb-3">
+          <label for="messageInput" class="form-label mb-3">Message</label>
+            <textarea class="form-control" id="messageInput" v-model="appointment.message" rows="3" >
+            </textarea>
         </div>
+
+       
+        
         <div class="col-12 ">
           <button type="submit" class="btn btn-primary mb-3" style="width: 120px;">Submit</button>
         </div>
       </form>
+      </div>
+
+      <div class="col-md-6">
+                <img src="@/assets/sign.jpg" class=" img-fluid image-margin" alt="Dental" >
+      </div>
     </div>
+  </div>
+
+  
   </template>
   
   <script>
-  import { ref } from 'vue';
+  import { ref ,onMounted } from 'vue';
+  import axios from 'axios'; 
   
   export default {
     setup() {
       const appointment = ref({
         date: '',
-        hospital: '',
-        doctor: ''
+        clinic: '',
+        time: '',
+        message: ''
+       
       });
-  
-      const hospitals = ref([
-        { id: 1, name: 'hospitalA' },
-        { id: 2, name: 'hospitalB' },
-        { id: 3, name: 'hospitalC' }
-      ]);
-  
-      const doctors = ref([
-        { id: 1, name: 'DoctorA' },
-        { id: 2, name: 'DoctorB' },
-        { id: 3, name: 'DoctorC' }
-      ]);
-  
-      function submitForm() {
+
+      const clinics = ref([]);
+      const times = ref([]);
+      const message = ref([]);
+
+    // Fetch data from backend
+    const fetchData = async () => {
+      try {
+        console.log('Attempting to get bookings from backend')
+        const response = await axios.get('http://localhost:8081/api/v1/bookings/');
+        console.log(response)
+
+        clinics.value = response.data.dentistName;
+        times.value = response.data.time;
+        message.value = response.data.message;
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+    onMounted(fetchData);
+    async function submitForm() {
+      try {
+        const response = await axios.post(`http://localhost:8081/api/v1/bookings/${booking._id}`, appointment.value);
+        console.log('submitForm Response:', response.data);
+        
+      } catch (error) {
+        console.error('Error submitting form:', error);
+      }
+    }
+
+      /*function submitForm() {
         console.log('booking information：', appointment.value);
         // This is where form submissions are handled, such as sending to an API or validation,
-      }
+      }*/
   
       return {
         appointment,
-        hospitals,
-        doctors,
+        clinics,
+        times,
+        message,
         submitForm
       };
     }
@@ -72,11 +112,15 @@
   <style>
     .booking-header {
     background-color: rgb(211, 222, 222); 
-    
-    padding: 0.5rem; /* Adjust padding as needed */
-    border-radius: 0.25rem; /* Optional: adds rounded corners */
-    /*margin-bottom: 9rem;*/
+
+    padding: 0.5rem;
+    border-radius: 0.25rem; 
+  
   }
+
+  .image-margin {
+  margin-top: 38px; 
+}
     </style>
     
   

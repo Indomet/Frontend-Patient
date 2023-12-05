@@ -37,7 +37,7 @@
                 </a>
               </li>
               <li>
-                <a @click="logout " href="#" class="nav-link px-0 align-middle">
+                <a @click="handlelogout " href="#" class="nav-link px-0 align-middle">
                   <i class="fs-4 bi-box-arrow-right"></i> <span class="ms-1 d-none d-sm-inline">Sign out</span> 
                 </a>
               </li>
@@ -74,6 +74,7 @@
       </div>
       </div>
     </div>
+    </div>
   </template>
   
   <script>
@@ -83,6 +84,11 @@
   import Appointment from './Appointment.vue';
   import Usersetting from './Usersetting.vue';
   import Inbox from './Inbox.vue';
+  import {logout } from '@/utils/auth'
+
+  //const token = getToken();
+  //const user = (token) ? decodeToken(token) : 'logged_out';
+  
 
   
   export default {
@@ -101,18 +107,21 @@
         currentContent.value = contentName;
       };
 
-      return {
-        currentContent,
-        showContent
-      };
-    },
-        methods: {
 
-            logout() {
-                this.$router.push('/');
-            }
+
+    return {
+      currentContent,
+      showContent,
+      
+    };
+  },
+
+    methods: {
+    handleLogout() {
+        logout();
+      }
     
-    }
+  }
 }
 
 

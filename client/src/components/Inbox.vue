@@ -1,133 +1,118 @@
 <template>
-    
-    <div class="container">
-    <div class="row">
-        <div class="col-md-12">
+    <div class="m-3">
+        <div class="mb-4">
             <div class="card">
-                <div class="card-body text-white mailbox-widget pb-0" style=" background-color:  #567890">
+                <div class="card-body text-white mailbox-widget pb-0" style="background-color: #567890">
                     <h2 class="text-white pb-3">Your Message</h2>
-                    
                 </div>
-                <div class="tab-content" id="myTabContent">
-                    <div class="tab-pane fade active show" id="inbox" aria-labelledby="inbox-tab" role="tabpanel">
-                        <div>
-                            <div class="row p-4 no-gutters align-items-center">
-                               
-                                <div class="col-sm-12 col-md-6">
-                                    <ul class="list-inline dl mb-0 float-left float-md-right">
-                                        <li class="list-inline-item text-info mr-3">
-                                            
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <!-- Mail list-->
-                            <div class="table-responsive">
-                                <table class="table email-table no-wrap table-hover v-middle mb-0 font-14">
-                                    <tbody>
-                                        <!-- row -->
-                                        <tr>
-                                            <!-- label -->
-                                            <td class="pl-3">
-                                                <div class="custom-control custom-checkbox">
-                                                    <input type="checkbox" class="custom-control-input" id="cst1" />
-                                                    <label class="custom-control-label" for="cst1">&nbsp;</label>
-                                                </div>
-                                            </td>
-                                            <!-- star -->
-                                            <td><i class="fa fa-star text-warning"></i></td>
-                                            <td>
-                                                <span class="mb-0 text-muted">Hritik Roshan</span>
-                                            </td>
-                                            <!-- Message -->
-                                            <td>
-                                                <a class="link" href="javascript: void(0)">
-                                                   
-                                                    <span class="text-dark">Lorem ipsum perspiciatis-</span>
-                                                </a>
-                                            </td>
-                                            <!-- Attachment -->
-                                            <td><i class="fa fa-paperclip text-muted"></i></td>
-                                            <!-- Time -->
-                                            <td class="text-muted">May 13</td>
-                                        </tr>
-                                        
-                                        <!-- row -->
-                                        <tr>
-                                            <!-- label -->
-                                            <td class="pl-3">
-                                                <div class="custom-control custom-checkbox">
-                                                    <input type="checkbox" class="custom-control-input" id="cst3" />
-                                                    <label class="custom-control-label" for="cst3">&nbsp;</label>
-                                                </div>
-                                            </td>
-                                            <!-- star -->
-                                            <td><i class="fa fa-star text-warning"></i></td>
-                                            <!-- User -->
-                                            <td class="user-name max-texts">
-                                                <span class="mb-0 text-muted font-light">Ritesh Deshmukh</span>
-                                            </td>
-                                            <!-- Message -->
-                                            <td>
-                                                <a class="link" href="javascript: void(0)">
-                                                    
-                                                    <span class="font-light text-dark">Bitbucket (commit Pushed) by Ritesh</span>
-                                                </a>
-                                            </td>
-                                            <!-- Attachment -->
-                                            <td><i class="fa fa-paperclip text-muted"></i></td>
-                                            <!-- Time -->
-                                            <td class="text-muted font-light">May 13</td>
-                                        </tr>
-                                        
-                                        
-                                        
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="tab-pane fade" id="sent" aria-labelledby="sent-tab" role="tabpanel">
-                        <div class="row p-3 text-dark">
-                            <div class="col-md-6">
-                                <h3 class="font-light">Lets check profile</h3>
-                                <h4 class="font-light">you can use it with the small code</h4>
-                            </div>
-                            <div class="col-md-6 text-right">
-                                <p>Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="tab-pane fade" id="spam" aria-labelledby="spam-tab" role="tabpanel">
-                        <div class="row p-3 text-dark">
-                            <div class="col-md-6">
-                                <h3 class="font-light">Come on you have a lot message</h3>
-                                <h4 class="font-light">you can use it with the small code</h4>
-                            </div>
-                            <div class="col-md-6 text-right">
-                                <p>Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="tab-pane fade" id="delete" aria-labelledby="delete-tab" role="tabpanel">
-                        <div class="row p-3 text-dark">
-                            <div class="col-md-6">
-                                <h3 class="font-light">Just do Settings</h3>
-                                <h4 class="font-light">you can use it with the small code</h4>
-                            </div>
-                            <div class="col-md-6 text-right">
-                                <p>Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a.</p>
-                            </div>
-                        </div>
-                    </div>
+
+                <!-- Mail list -->
+                <div class="table-responsive">
+                    <table class="table email-table no-wrap table-hover mb-0 font-14">
+                        <thead class="table-light sticky-header">
+                            <tr>
+                                <th>
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" id="checkAllBottom" v-model="selectAll" @change="toggleSelectAll" />
+                                        <label class="custom-control-label" for="checkAllBottom"> All</label>
+                                    </div>
+                                </th>
+                                <th>Sender</th>
+                                <th>Content</th>
+                                <th>Received Time</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="message in messages" :key="message.id">
+                                <td class="pl-3">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" :id="'check_' + message.id" v-model="message.selected" />
+                                        <label class="custom-control-label" :for="'check_' + message.id">&nbsp;</label>
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="mb-0 text-muted">{{ message.sender }}</span>
+                                </td>
+                                <td>
+                                    <a class="link" href="javascript:void(0)" @click="showMessageDetails(message)">
+                                        <span class="text-dark">{{ message.content }}</span>
+                                    </a>
+                                </td>
+                                <td class="text-muted">{{ message.receivedTime }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
+            </div> 
+        </div>
+
+        <div class="row justify-content-start mt-4">
+            <div class="col-auto">
+                <button class="btn btn-danger" @click="deleteSelectedMessages">Delete </button>
             </div>
         </div>
+
+      
+        <div v-if="showModal" class="modal" :style="{ display: showModal ? 'block' : 'none' }">
+            <div class="modal-content">
+                <span class="close" @click="closeModal">&times;</span>
+                <h3>Message Details</h3>
+                <p><strong>Received Time:</strong> {{ selectedMessage.receivedTime }}</p>
+                <p><strong>Sender:</strong> {{ selectedMessage.sender }}</p>
+                <p><strong>Content:</strong> {{ selectedMessage.content }}</p>
+               
+            </div>
+        </div>
+
     </div>
-</div>
-                         
 </template>
 
+<script>
+export default {
+    data() {
+        return {
+            selectAll: false,
+            selectedMessage: null,
+            showModal: false,
+            messages: [
+                {
+                    id: 'M1',
+                    sender: 'NAS',
+                    content: 'More details in there',
+                    receivedTime: 'May 22',
+                    selected: false
+                },
+                {
+                    id: 'M2',
+                    sender: 'ZE PEI',
+                    content: 'Your appointment for dental cleaning has been successful',
+                    receivedTime: 'May 13',
+                    selected: false
+                },
+                
+            ]
+        };
+    },
+    methods: {
+        toggleSelectAll() {
+            this.messages.forEach(message => {
+                message.selected = this.selectAll;
+            });
+        },
+        deleteSelectedMessages() {
+            this.messages = this.messages.filter(msg => !msg.selected);
+        },
+        showMessageDetails(message) {
+    console.log("showMessageDetails called with", message);
+    this.selectedMessage = message;
+    this.showModal = true;
+},
+        closeModal() {
+            this.showModal = false;
+        }
+    }
+}
+</script>
 
 <style >
 
@@ -170,5 +155,48 @@ body{
 .font-light {
     font-weight: 300;
 }
+
+.email-table {
+    width: 100%;
+}
+
+/* for message detail */
+.modal {
+    display: block; 
+    position: fixed; 
+    z-index: 1000; 
+    left: 0;
+    top: 0;
+    width: 100%; 
+    height: 100%; 
+    overflow: auto; 
+    background-color: rgb(0,0,0); 
+    background-color: rgba(0,0,0,0.4); 
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto; 
+    padding: 25px;
+    border: 1px solid #888;
+    max-width: 800px; 
+    min-width: 300px;
+    width: 80%; 
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+ 
 
 </style>
