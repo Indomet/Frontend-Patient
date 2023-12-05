@@ -37,14 +37,23 @@
                 </a>
               </li>
               <li>
-                <a @click="handlelogout " href="#" class="nav-link px-0 align-middle">
+                <a @click="logout " href="#" class="nav-link px-0 align-middle">
                   <i class="fs-4 bi-box-arrow-right"></i> <span class="ms-1 d-none d-sm-inline">Sign out</span> 
                 </a>
               </li>
 
             </ul>
           </div>
-          
+          <div class="dropdown pb-7">
+                    <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+                        <img src="https://github.com/mdo.png" alt="hugenerd" width="50" height="50" class="rounded-circle">
+                        <span class="d-none d-sm-inline mx-1">loser</span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
+                        <li><a class="dropdown-item" href="#">Sign out</a></li>
+                    </ul>
+        </div>
+    </div>
     <div class="col py-3">
         
         <div v-if="currentContent === 'booking'">
@@ -62,11 +71,10 @@
         <div v-if="currentContent === 'profile'">
           <Usersetting />
         </div>
-
-    </div>
+      </div>
       </div>
     </div>
-    </div>
+
   </template>
   
   <script>
@@ -109,7 +117,7 @@
   },
 
     methods: {
-    handleLogout() {
+    logout() {
         logout();
       }
     
