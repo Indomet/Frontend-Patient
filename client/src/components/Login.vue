@@ -84,6 +84,11 @@ export default {
           this.$router.push("/userdashboard");
         }
       } catch (error) {
+        if (error.response && error.response.status === 401) {
+          alert("Email or password is incorrect.");
+        } else {
+          alert("An error occurred. Please try again later.");
+        }
         console.error("Login error:", error);
         console.log("Error details:", error.response);
       }
