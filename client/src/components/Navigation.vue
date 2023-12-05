@@ -42,6 +42,7 @@
   import { useRouter } from 'vue-router';
   import { getToken, logout } from '../utils/auth'
   
+  
   export default {
     setup() {
     const isUserLoggedIn = ref(false);
@@ -59,7 +60,7 @@
      }
   
      function redirectToSignUp() {
-       router.push('/signup');
+       router.push('/register');
      }
   
      function logout() {
