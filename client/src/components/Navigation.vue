@@ -40,6 +40,8 @@
   <script>
   import { ref } from 'vue';
   import { useRouter } from 'vue-router';
+  import { logout } from '@/utils/auth'
+  
   
   export default {
    setup() {

@@ -46,7 +46,8 @@
   
   <script>
 //import axiosInstance from "@/axios.js";
-import axios from 'axios';
+import { login } from '../utils/auth'
+
 
 export default {
   name: "App",
@@ -63,36 +64,17 @@ export default {
   },
 
   methods: {
-    async login() {
-      try {
-        if (this.password.length < 6) {
-          alert("Password must be at least 6 characters long.");
-          return;
-        }
-        const response = await axios.post('http://localhost:8000/patient/login/', {
-          email: this.email,
-          password: this.password,
-        });
-
-        if (response.status === 200) {
-          const token = response.data.token;
-          console.log("authToken:", token);
-
-          localStorage.setItem("authToken", token);
-          console.log(response.data);
-          
-          this.$router.push("/userdashboard");
-        }
-      } catch (error) {
-        console.error("Login error:", error);
-        console.log("Error details:", error.response);
-      }
+      async login() {
+            login(this.email, this.password);
+        },
     },
-  },
+  
 };
 </script>
   
-  <style scoped>
+
+
+<style scoped>
   .login-form {
     width: 450px;
     margin: 100px auto;
@@ -125,7 +107,7 @@ export default {
     margin: 20px;
     }
   }
-}
+
 </style>
   
   
