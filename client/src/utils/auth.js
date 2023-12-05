@@ -50,6 +50,5 @@ export const login = async (email, password) => {
 
 export const logout = () => {
   clearToken();
-  
   Router.push('/login');
 }
