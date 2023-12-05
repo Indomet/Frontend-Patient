@@ -33,13 +33,35 @@ const router = createRouter({
     {
       path: '/userdashboard',
       name: 'userdashboard',
-      component: Userdashboard
-    },
-    
-    
-   
+      component: Userdashboard,
+      meta: {requiresAuth: true}
+    }
     
   ]
-})
+});
+
+router.beforeEach((to, from, next) => {
+  if (to.matched.some((record) => record.meta.requiresAuth)) {
+      // Check if the user is authenticated
+      const token = getToken();
+
+      if (!token) {
+          return next('/login'); // Redirect to the login page if not authenticated
+      }
+
+      // Continue to the protected route
+      next();
+  } else {
+      next(); // Allow access to public routes
+  }
+});
+
+function isUserLoggedIn(to, from, next) {
+  if (!getToken()) {
+      next();
+  } else {
+      next('/userdashboard');
+  }
+}
 
 export default router
