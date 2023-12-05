@@ -29,7 +29,7 @@
            <button @click="redirectToSignUp" class="btn btn-outline-primary" style="width: 100px;">Sign-up</button>
          </span>
          <span class="navbar-text" v-else>
-           <router-link to="/useraccount" class="btn btn-primary me-2">Account</router-link>
+           <router-link to="/userdashboard" class="btn btn-primary me-2">Account</router-link>
            <button @click="logout" class="btn btn-outline-primary">Log out</button>
          </span>
        </div>
@@ -38,46 +38,40 @@
   </template>
   
   <script>
-  import { ref , onMounted } from 'vue';
+ // import { ref , onMounted } from 'vue';
   import { useRouter } from 'vue-router';
-  import { getToken, logout } from '../utils/auth'
+  import { getToken, logout  } from '../utils/auth'
   
   
   export default {
-    setup() {
-    const isUserLoggedIn = ref(false);
-    const router = useRouter();
+        data() {
+            return {
+                isUserLoggedIn: false,
+                navbarCollapsed: true
+            }
+        },
+        mounted() {
+            this.isUserLoggedIn = (getToken()) ? true : false;
+            console.log(this.isUserLoggedIn)
+        },
+        methods: {
+            logout() {
+                logout();
+            },
+            redirectToLogin() {
+                this.$router.push('/login');
+            },
+            redirectToSignUp() {
+                this.$router.push('/register');
+            },
+            
 
-    onMounted(() => {
-      // Check if user is logged in (has a token)
-      isUserLoggedIn.value = !!getToken();
-      console.log(this.isUserLoggedIn)
-    });
-
-
-     function redirectToLogin() {
-       router.push('/login');
-     }
-  
-     function redirectToSignUp() {
-       router.push('/register');
-     }
-  
-     function logout() {
-      logout();
-       isUserLoggedIn.value = false;
-       router.push('/');
-     }
-  
-     return {
-       isUserLoggedIn,
-       redirectToLogin,
-       redirectToSignUp,
-       logout
-     };
-   }
-  };
-  </script>
+        },
+        components: {
+          useRouter
+        }
+    }
+</script>
   
   <style>
   
