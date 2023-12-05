@@ -4,7 +4,7 @@ import Booking from '../components/Booking.vue'
 import Login from '../components/Login.vue'
 import Register from '../components/Register.vue'
 import Userdashboard from '../components/Userdashboard.vue'
-
+import { getToken } from '../utils/auth'
 
 
 const router = createRouter({
