@@ -38,14 +38,22 @@
   </template>
   
   <script>
-  import { ref } from 'vue';
+  import { ref , onMounted } from 'vue';
   import { useRouter } from 'vue-router';
+  import { getToken, logout } from '../utils/auth'
   
   export default {
-   setup() {
-     const isUserLoggedIn = ref(false); // Replace with actual login check
-     const router = useRouter();
-  
+    setup() {
+    const isUserLoggedIn = ref(false);
+    const router = useRouter();
+
+    onMounted(() => {
+      // Check if user is logged in (has a token)
+      isUserLoggedIn.value = !!getToken();
+      console.log(this.isUserLoggedIn)
+    });
+
+
      function redirectToLogin() {
        router.push('/login');
      }
@@ -55,7 +63,7 @@
      }
   
      function logout() {
-       // Perform logout logic here
+      logout();
        isUserLoggedIn.value = false;
        router.push('/');
      }
