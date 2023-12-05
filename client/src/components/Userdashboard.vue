@@ -53,7 +53,6 @@
                         <li><a class="dropdown-item" href="#">Sign out</a></li>
                     </ul>
         </div>
-
     </div>
     <div class="col py-3">
         
@@ -72,8 +71,6 @@
         <div v-if="currentContent === 'profile'">
           <Usersetting />
         </div>
-
-    
       </div>
       </div>
     </div>
