@@ -54,7 +54,8 @@
   
   <script>
   //import axiosInstance from '@/axios.js'; 
-  import axios from 'axios'; 
+  
+  import { register } from '../utils/auth'
   
   export default {
     data() {
@@ -67,41 +68,25 @@
         
       }
     },
+
     methods: {
-      redirectToLogin() {
-        // use router.push Navigate to the login page
-        this.$router.push('/login');
-      },
+    redirectToLogin() {
+      // use router.push Navigate to the login page
+      this.$router.push('/login');
+    },
+    
 
-  async register() {
-  const userData = {
-    email: this.email,
-    first_name: this.first_name,
-    last_name: this.last_name,
-    password: this.password,
-    phone_number: this.phone_number,
-  };
-
-  try {
-    const response = await axios.post('http://localhost:8000/api/v1/patients/', userData);
-    alert(`Email: ${email} Registration successful!`);
-    console.log('Registration successful:', response.data);
-    this.redirectToLogin();
-  } catch (error) {
-    if (error.response) {
-      
-      console.log(error.response.data);
-      console.log(error.response.status);
-      console.log(error.response.headers);
-      
-    } else if (error.request) {
-      console.log(error.request);
-    } else {
-      console.log('Error', error.message);
+    register() {
+      const userData = {
+        email: this.email,
+        first_name: this.first_name,
+        last_name: this.last_name,
+        password: this.password,
+        phone_number: this.phone_number,
+      }
+    register(userData);
     }
-  }
-}
-  },
+  }, 
 } 
 </script>
   
