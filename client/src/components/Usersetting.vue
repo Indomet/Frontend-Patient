@@ -58,7 +58,8 @@
 
 <script>
 //import axiosInstance from '@/axios.js';
-import axiosInstance from 'axios';
+import axios from 'axios';
+import { getToken } from '@/utils/auth'
 export default {
     data() {
         return {
@@ -73,22 +74,54 @@ export default {
     },
      async mounted() {
             try {
-                const token = localStorage.getItem('authToken');
-                const response = await axiosInstance.get('/api/user/profile', {
+               
+                const token = getToken(); 
+                if (!token) {
+                console.error('No token found');
+                return;
+                }
+                const userId = this.getUserId();
+                if (!userId) {
+                console.error('No user ID found');
+                return;
+                }
+                const response = await axios.get(`http://localhost:8000/api/v1/patients/${userId}` , {
                     headers: {
                         Authorization: `Bearer ${token}`
                     }
                 });
-
                 if (response.status === 200) {
                     this.user = response.data;
-                    console.log('Profile updated successfully');
+                    console.log('Profile updated successfully',response.data);
+                } else {
+                    console.error('Unexpected response status:', response.status);
                 }
             } catch (error) {
-                console.error('Error updating profile:', error);
-            }
+                    console.error('Error updating profile:', error);
+                if (error.response) {
+                    console.error('Error details:', error.response);
+                }
+                }
+        },
+        methods: {
+            getUserId() {
+            try{
+                const userInfo = localStorage.getItem('userInfo');
+                    if (userInfo) {
+                        const user = JSON.parse(userInfo);
+                        console.log('User info retrieved:', user);
+                    return user.id; 
+                    } else {
+                        console.error('No user info found in localStorage');
+                    }
+            } catch (error) {
+                console.error('Error parsing user info from localStorage:', error);
+        }
+            return null; 
         }
     }
+
+}
 
 </script>
     
