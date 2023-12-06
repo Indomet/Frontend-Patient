@@ -98,8 +98,6 @@
       const token = getToken();
       const isUserLoggedIn = !!token;  // check if the user is logged with token
 
-
-
     return {
       currentContent,
       showContent,
