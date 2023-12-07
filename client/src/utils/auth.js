@@ -33,19 +33,15 @@ export const login = async (email, password) => {
 
     setToken(response.data.token); // save token in the localStorage
     localStorage.setItem('userInfo', JSON.stringify(response.data)); // save user information in localStorage
-    console.log(response.data)   // can not get date 
+    console.log(response.data)   // can not get date
     console.log("authToken:",response.data.token);  // can got token
-    
+
     Router.push('/userdashboard');
+    return true
 
   } catch (error) {
-    if (error.response && error.response.status === 401) {
-          alert("Email or password is incorrect.");
-        } else {
-          alert("You are logged in. Please log out and try again later.");
-        }
-        console.error("Login error:", error);
-        console.log("Error details:", error.response);
+    alert("Email or password is incorrect.");
+    console.log("Error details:", error.response);
   }
 }
 
