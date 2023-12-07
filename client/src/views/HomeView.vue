@@ -10,13 +10,13 @@
 
 <template>
     <div>
-        <Navigation />
+        <Navigation></Navigation>
         <main>
-            <Homepage />
-            <Ourservice />
-            <Booking />
-            <Openstreetmap />
-            <Aboutus />
+            <Homepage/>
+            <Ourservice/>
+            <Booking/>
+            <Openstreetmap/>
+            <Aboutus/>
         </main>
     </div>
 </template>
