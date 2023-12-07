@@ -24,9 +24,8 @@
             </li>
          </ul>
          <span class="navbar-text" v-if="!isUserLoggedIn">
-           <button @click="redirectToLogin" class="btn btn-primary me-2" style="width: 100px;">Login</button>
-           
-           <button @click="redirectToSignUp" class="btn btn-outline-primary" style="width: 100px;">Sign-up</button>
+           <a href="/login"><button class="btn btn-primary me-2" style="width: 100px;">Login</button></a>
+           <a href="/register"><button class="btn btn-outline-primary" style="width: 100px;">Sign-up</button></a>
          </span>
          <span class="navbar-text" v-else>
            <router-link to="/userdashboard" class="btn btn-primary me-2">Account</router-link>
@@ -36,13 +35,13 @@
      </div>
    </nav>
   </template>
-  
+
   <script>
  // import { ref , onMounted } from 'vue';
   import { useRouter } from 'vue-router';
   import { getToken, logout  } from '../utils/auth'
-  
-  
+
+
   export default {
         data() {
             return {
@@ -57,44 +56,36 @@
         methods: {
             logout() {
                 logout();
-            },
-            redirectToLogin() {
-                this.$router.push('/login');
-            },
-            redirectToSignUp() {
-                this.$router.push('/register');
-            },
-            
-
+            }
         },
         components: {
           useRouter
         }
     }
 </script>
-  
+
   <style>
-  
-  
+
+
   .custom-navbar {
    background-color: rgb(211, 222, 222);
-   
+
   }
-  
+
   .nav-link:hover {
-    color: hsla(160, 100%, 37%, 1); 
-    background-color: rgba(44, 99, 124, 0.1); 
-    transition: color 0.3s, background-color 0.3s; 
+    color: hsla(160, 100%, 37%, 1);
+    background-color: rgba(44, 99, 124, 0.1);
+    transition: color 0.3s, background-color 0.3s;
   }
-  
+
   #navbarSupportedContent ul.navbar-nav {
-    margin-left: 8%; 
-    
+    margin-left: 8%;
+
   }
-  
- 
+
+
   #navbarSupportedContent .navbar-text {
-    margin-right: 10%; 
+    margin-right: 10%;
   }
-  
+
   </style>
