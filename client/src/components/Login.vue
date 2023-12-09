@@ -42,7 +42,6 @@
         <div style="text-align: left; display: inline;"><a href="/">Back to home</a></div>
         <div style="text-align: right; display: inline;" > <a href="/register" >Sign up</a></div>
         </div>
-
     </div>
   </div>
 </template>
@@ -57,8 +56,7 @@ export default {
   data() {
     return {
       email: "",
-      password: "",
-      boolean: false,
+      password: ""
     };
   },
   computed: {
@@ -70,9 +68,6 @@ export default {
   methods: {
         async login() {
             login(this.email, this.password);
-        },
-        switchb() {
-            this.boolean = !this.boolean;
         }
     },
 
