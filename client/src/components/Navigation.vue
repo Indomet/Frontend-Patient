@@ -1,7 +1,7 @@
 <template>
     <nav id="mainNav" class="navbar navbar-expand-lg sticky-top custom-navbar">
         <div class="container-fluid">
-            <router-link to="/" class="navbar-brand">Gothenburg Dentist Clinic</router-link>
+            <router-link to="/" class="navbar-brand">Sweden Dentist Clinics</router-link>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -18,7 +18,7 @@
                         <a href="#bookings" class="nav-link">Booking</a>
                     </li>
                     <li class="nav-item">
-                        <a href="#locations" class="nav-link">Our Locations</a>
+                        <a href="#map" class="nav-link">Our Locations</a>
                     </li>
                     <li class="nav-item">
                         <a href="#aboutus" class="nav-link">About Us</a>
@@ -31,15 +31,12 @@
                                 style="width: 100px;">Sign-up</button></a>
                     </div>
                     <div v-else>
-                        <router-link to="/userdashboard" class="btn btn-primary me-2">Account</router-link>
+                        <router-link to="/userdashboard" class="btn btn-primary me-2">Dashboard</router-link>
                         <button @click="logout" class="btn btn-outline-primary">Log out</button>
                     </div>
-                    <button @click="switchb">Switch</button>
                 </div>
             </div>
         </div>
-        <h2 v-if="booleanC">True</h2>
-        <h2 v-else>False</h2>
     </nav>
 </template>
 
@@ -137,7 +134,9 @@ export default {
 
 .navbar-brand:hover {
     color: rgb(52, 179, 136);
-    text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.242);
+    text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.242), /* offset shadow */
+    0 0 1em rgba(0, 0, 0, 0.5), /* inner shadow */
+    0 0 0.2em rgba(0, 0, 0, 0.5); /*innermost shadow */
     transition: all 0.3s;
 }
 </style>

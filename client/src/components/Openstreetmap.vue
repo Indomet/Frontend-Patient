@@ -1,5 +1,5 @@
 <template>
-  <div class="container mt-5">
+  <div id="map" class="container mt-5">
     <section class="map-header mb-1">
       <h3 >Our Locations</h3>
     </section>
@@ -80,8 +80,8 @@ export default {
 }
 
 .map-header {
-    background-color: rgb(211, 222, 222); 
-    padding: 0.5rem; 
+    background-color: rgb(211, 222, 222);
+    padding: 0.5rem;
     border-radius: 0.25rem;
     }
 </style>

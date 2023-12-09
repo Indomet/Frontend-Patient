@@ -1,11 +1,11 @@
 <template>
-    
+
     <div  class="m-3">
     <div class=" mb-4">
         <div class="card">
-            <div class="card-body text-white mailbox-widget pb-0" style="background-color: #567890;"> 
+            <div class="card-body text-white mailbox-widget pb-0" style="background-color: #567890;">
                 <h2 class="text-white pb-3">Appointment</h2>
-                    
+
                 </div>
       </div>
     </div>
@@ -23,16 +23,16 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(iterm, index) in Iterms" :key="iterm.id">
+          <tr v-for="(item, index) in Items" :key="item.id">
             <th scope="row">{{ index + 1 }}</th>
-            <td>{{ iterm.date }}</td>
-            <td>{{ iterm.time }}</td>
-            <td>{{ iterm.clinic }}</td>
-            <td>{{ iterm.address }}</td>
-            <td>{{ iterm.message }}</td>
-            
+            <td>{{ item.date }}</td>
+            <td>{{ item.time }}</td>
+            <td>{{ item.clinic }}</td>
+            <td>{{ item.address }}</td>
+            <td>{{ item.message }}</td>
+
             <td>
-              <button class="btn btn-danger" @click="cancelIterms(iterm.id)">Cancel</button>
+              <button class="btn btn-danger" @click="cancelIterms(item.id)">Cancel</button>
             </td>
           </tr>
         </tbody>
@@ -42,18 +42,18 @@
 </template>
 
 <script>
-import axios from 'axios'; 
+import axios from 'axios';
 
 export default {
   name: 'AppointmentTable',
   data() {
     return {
-      Iterms: [],
+      items: [],
       // showBoookings: true,
     };
   },
   mounted() {
-    this.fetchIterms(); 
+    this.fetchIterms();
   },
   methods: {
     async fetchIterms() {
@@ -65,28 +65,28 @@ export default {
       }
     });
 
-    if (response.status === 200 && response.data.Iterms) {
-      this.Iterms = response.data.Iterms;
+    if (response.status === 200 && response.data.items) {
+      this.items = response.data.items;
       // this.showBoookings = false;
-      console.log(this.Iterms);
+      console.log(this.items);
     }
   } catch (error) {
     console.error('Error bookings', error);
     // this.showBoookings = false;
   }
 },
-  
-    cancelIterms(itermId) {
-      axios.delete(`/iterms/${itermId}`).then(response => {
+
+    cancelIterms(itemId) {
+      axios.delete(`/iterms/${itemId}`).then(response => {
         console.log(response.data);
         if (response.status === 200) {
-          this.Iterms = this.Iterms.filter(iterm => iterm.id !== itermId);
+          this.items = this.items.filter(items => items.id !== itemId);
         }
       }).catch(error => {
         console.error('Error:', error);
       });
     },
-  
+
   }
 }
 
@@ -101,22 +101,22 @@ export default {
 }
 
 .text-center {
-  margin-bottom: 32rem; 
+  margin-bottom: 32rem;
 }
 .custom-table {
-  min-width: 50vw; 
+  min-width: 50vw;
 }
 
 
 .table td,
 .table th {
-  padding: 1rem; 
+  padding: 1rem;
 }
 
 
 .table th,
 .table td {
-  font-size: 1.25rem; 
+  font-size: 1.25rem;
 }
 </style>
 
