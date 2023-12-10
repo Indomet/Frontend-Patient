@@ -23,7 +23,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(item, index) in Items" :key="item.id">
+          <tr v-for="(item, index) in items" :key="item.id">
             <th scope="row">{{ index + 1 }}</th>
             <td>{{ item.date }}</td>
             <td>{{ item.time }}</td>

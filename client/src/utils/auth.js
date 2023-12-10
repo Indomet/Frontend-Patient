@@ -35,6 +35,8 @@ export const login = (email, password) => {
         const userId = response.data.user.id;
         localStorage.setItem('token', token); // save token in the localStorage
         localStorage.setItem('userId', userId); // save user id in localStorage
+        console.log("authToken:",response.data.token);  
+        console.log("userInfor:",response.data.user);  
         Router.push('/userdashboard');
     })
     .catch((error) => {

@@ -9,7 +9,7 @@
                     <div class="row" style="display: flex; justify-content: center;">
                         <div class="col-md-5 border-right">
                             <div class="p-3 py-5">
-                                <form @submit.prevent="updateProfile">
+                                
                                     <div class="row mt-3">
                                         <div class="col-md-12">
                                             <label class="labels">User Email</label>
@@ -36,9 +36,9 @@
                                     </div>
 
                                     <div class="mt-5 text-center">
-                                        <button class="btn btn-primary profile-button" type="submit">Save Profile</button>
+                                        <button class="btn btn-primary profile-button" @click="updateProfile">Save Profile</button>
                                     </div>
-                                </form>
+                               
                             </div>
                         </div>
 
@@ -52,8 +52,57 @@
 <script>
 
 import axios from 'axios';
-import { getToken } from '@/utils/auth'
+import { getToken } from '@/utils/auth';
+import { mapState, mapMutations } from 'vuex';
+
+
 export default {
+    computed: {
+        ...mapState(['user', 'userId'])
+    },
+    async mounted() {
+        try {
+            const token = getToken();
+            const response = await axios.get(`http://localhost:8000/api/v1/patients/${this.userId}`, {
+                headers: {
+                    Authorization: token
+                }
+            });
+            this.setUser(response.data);
+        } catch (error) {
+            console.error('Error fetching user:', error);
+        }
+    },
+    methods: {
+        ...mapMutations(['setUser']),
+        async updateProfile() {
+            try {
+                const updatedData = {
+                    email: this.user.email,
+                    first_name: this.user.first_name,
+                    last_name: this.user.last_name,
+                    phone_number: this.user.phone_number,
+                };
+                const token = getToken();
+                const response = await axios.patch(`http://localhost:8000/api/v1/patients/${this.userId}/`, updatedData, {
+                    headers: {
+                        Authorization: token
+                    }
+                });
+                if (response.status === 200) {
+                    this.setUser({...response.data});
+                    alert('Profile updated successfully');
+                }
+            } catch (error) {
+                alert('Error updating profile');
+                console.error('Error:', error);
+            }
+            
+        }
+    }
+}
+
+/*export default {
     data() {
         return {
             user: {
@@ -77,6 +126,7 @@ export default {
             console.log(this.user);
         } catch (error) {
             console.error('User not found', error);
+            console.log(error.response.data)
             if (error.response) {
                 console.error('Error details:', error.response);
             }
@@ -104,7 +154,7 @@ export default {
                     this.user = response.data;
                     alert('Profile updated successfully');
                 }
-                window.location.reload();
+                //window.location.reload();
             }).catch(error => {
                 alert('Error updating profile');
                 console.error('Error:', error);
@@ -113,7 +163,7 @@ export default {
         }
 
     }
-}
+}*/
 
 </script>
 
