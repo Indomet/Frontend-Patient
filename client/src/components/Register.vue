@@ -19,7 +19,7 @@
                 <input :type="passwordFieldType" v-model="password" class="form-control rounded-3" id="password-input" placeholder="Password">
                 <label for="password-input">Password</label>
                 <span class="position-absolute top-50 end-0 translate-middle-y me-3" style="cursor: pointer;" @click="togglePasswordVisibility">
-                  <i :class="passwordFieldType === 'password' ? 'bi-eye' : 'bi-eye-slash'"></i>
+                  <i :class="passwordFieldType === 'password' ? 'bi-eye-slash' : 'bi-eye'"></i>
                 </span>
               </div>
               <div class="form-floating mb-3">
@@ -89,7 +89,7 @@
         return;
       }
       const userData = {
-        
+
         email: this.email,
         first_name: this.first_name,
         last_name: this.last_name,

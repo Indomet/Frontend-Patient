@@ -69,9 +69,10 @@ export default {
         async login() {
             login(this.email, this.password);
         }
-    },
+    }
 
 };
+
 </script>
 
 

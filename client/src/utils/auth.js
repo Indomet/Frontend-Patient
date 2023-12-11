@@ -11,7 +11,7 @@ export const getToken = () => {
 // }
 
 export const clearToken = () => {
-  localStorage.removeItem('token');
+  localStorage.clear();
 }
 
 export const register = async (userData) => {
@@ -33,14 +33,16 @@ export const login = (email, password) => {
     .then((response) => {
         const token = response.data.token;
         const userId = response.data.user.id;
+        const user = response.data.user;
         localStorage.setItem('token', token); // save token in the localStorage
         localStorage.setItem('userId', userId); // save user id in localStorage
-        console.log("authToken:",response.data.token);  
-        console.log("userInfor:",response.data.user);  
+        localStorage.setItem('user', JSON.stringify(user)); // save user information in localStorage
+        console.log("token: ",response.data.token);
+        console.log("userInfor: ",response.data.user);
         Router.push('/userdashboard');
     })
     .catch((error) => {
-        //alert("Email or password is incorrect.");
+        alert("Email or password is incorrect.");
         console.log("Error details:", error);
     });
 }
@@ -68,7 +70,7 @@ export const login = (email, password) => {
 export const logout = () => {
     if(confirm("Are you sure you want to logout?")){
       clearToken();
-     
+
         Router.push('/login');
     }
 

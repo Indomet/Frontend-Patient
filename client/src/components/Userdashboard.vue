@@ -37,7 +37,7 @@
                 </a>
               </li>
               <li>
-                <a @click="logout " href="#" class="nav-link px-0 align-middle">
+                <a @click="logout()" href="#" class="nav-link px-0 align-middle">
                   <i class="fs-4 bi-box-arrow-right"></i> <span class="ms-1 d-none d-sm-inline">Sign out</span>
                 </a>
               </li>
@@ -77,7 +77,7 @@
   import Inbox from './Inbox.vue';
   import { getToken, logout} from '@/utils/auth';
   //import { mapActions } from 'vuex';mapActions
-  
+
 
 
   export default {

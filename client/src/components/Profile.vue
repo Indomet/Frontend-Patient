@@ -9,7 +9,7 @@
                     <div class="row" style="display: flex; justify-content: center;">
                         <div class="col-md-5 border-right">
                             <div class="p-3 py-5">
-                                
+                                <form @submit.prevent="updateProfile">
                                     <div class="row mt-3">
                                         <div class="col-md-12">
                                             <label class="labels">User Email</label>
@@ -30,15 +30,15 @@
 
                                         <div class="col-md-12"><label class="labels">Mobile Number</label>
                                             <input type="text" class="form-control" placeholder="phone number"
-                                                v-model="user.phone_number">
+                                                v-model="user.phone_number" id="phone_number">
                                         </div>
 
                                     </div>
 
                                     <div class="mt-5 text-center">
-                                        <button class="btn btn-primary profile-button" @click="updateProfile">Save Profile</button>
+                                        <button class="btn btn-primary profile-button" @click="submit">Save Profile</button>
                                     </div>
-                               
+                                </form>
                             </div>
                         </div>
 
@@ -97,7 +97,7 @@ import { getToken } from '@/utils/auth';
                 alert('Error updating profile');
                 console.error('Error:', error);
             }
-            
+
         }
     }
 }*/
@@ -105,12 +105,7 @@ import { getToken } from '@/utils/auth';
 export default {
     data() {
         return {
-            user: {
-                email: '',
-                first_name: '',
-                last_name: '',
-                phone_number: '',
-            },
+            user: localStorage.getItem('user'),
             userId: localStorage.getItem('userId'),
         };
     },
@@ -151,15 +146,21 @@ export default {
             }).then(response => {
                 console.log(response.data);
                 if (response.status === 200) {
+
+                    //alert('Profile updated successfully');
+                    this.updateLocalUser(response.data);
                     this.user = response.data;
-                    alert('Profile updated successfully');
+                    window.location.reload();
                 }
-                window.location.reload();
+
             }).catch(error => {
                 alert('Error updating profile');
                 console.error('Error:', error);
             });
 
+        },
+        updateLocalUser(userData) {
+            localStorage.setItem('user', JSON.stringify(userData));
         }
 
     }
