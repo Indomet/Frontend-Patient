@@ -8,6 +8,10 @@
                 </div>
             </div>
         </div>
+        <div style="padding-bottom: 5px;">
+            <input type="checkbox" v-model="showCancelled" id="show_cancelled">
+            <label for="show_cancelled" style="margin-left: 3px; font-weight: bold;">Show cancelled bookings</label>
+        </div>
         <div class="table-responsive">
             <table class="table custom-table">
                 <thead class="table-light sticky-header">
@@ -22,15 +26,13 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="(item, index) in bookings" :key="item.id">
+                    <tr v-for="(item, index) in filteredBookings" :key="item.id">
                         <th scope="row">{{ index + 1 }}</th>
                         <td>{{ item.date }}</td>
                         <td>{{ item.time }}</td>
                         <td>{{ item.dentistName }}</td>
                         <td>{{ item.message }}</td>
                         <td>{{ item.status }}</td>
-
-
                         <td>
                             <button v-if="item.status!='CANCELED'" class="btn btn-danger" @click="cancelBooking(item._id)">Cancel</button>
                             <p v-else>N/A</p>
@@ -51,8 +53,18 @@ export default {
         return {
             bookings: [],
             userId: localStorage.getItem('userId'),
-            token: localStorage.getItem('token')
+            token: localStorage.getItem('token'),
+            showCancelled: true
         };
+    },
+    computed: {
+        filteredBookings() {
+            if (this.showCancelled) {
+                return this.bookings;
+            } else {
+                return this.bookings.filter(booking => booking.status !== 'CANCELED');
+            }
+        }
     },
     mounted() {
         this.fetchBookings();
