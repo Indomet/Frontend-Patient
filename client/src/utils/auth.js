@@ -67,7 +67,8 @@ export const login = (email, password) => {
 
 export const logout = () => {
     if(confirm("Are you sure you want to logout?")){
-        clearToken();
+      clearToken();
+     
         Router.push('/login');
     }
 

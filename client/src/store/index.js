@@ -11,6 +11,7 @@ export const store = createStore({
             state.user = { ...state.user, ...userData }; // Use the spread operator to update the user data
             localStorage.setItem('user', JSON.stringify(state.user)); // Save the updated user data to local storage
         },
+        
         /*setUserId(state, userId) {
             state.userId = userId;
             localStorage.setItem('userId', userId); //  userId save in localstorage
@@ -24,6 +25,8 @@ export const store = createStore({
             commit('setUserId', userId);
         }
     }*/
+
+    
 });
 
 export default store;

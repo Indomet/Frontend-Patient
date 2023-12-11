@@ -53,10 +53,10 @@
 
 import axios from 'axios';
 import { getToken } from '@/utils/auth';
-import { mapState, mapMutations } from 'vuex';
+//import { mapState, mapMutations } from 'vuex';
 
 
-export default {
+/*export default {
     computed: {
         ...mapState(['user', 'userId'])
     },
@@ -100,9 +100,9 @@ export default {
             
         }
     }
-}
+}*/
 
-/*export default {
+export default {
     data() {
         return {
             user: {
@@ -154,7 +154,7 @@ export default {
                     this.user = response.data;
                     alert('Profile updated successfully');
                 }
-                //window.location.reload();
+                window.location.reload();
             }).catch(error => {
                 alert('Error updating profile');
                 console.error('Error:', error);
@@ -163,7 +163,7 @@ export default {
         }
 
     }
-}*/
+}
 
 </script>
 

@@ -95,7 +95,7 @@
         last_name: this.last_name,
         password: this.password,
         phone_number: this.phone_number,
-      }
+      };
     register(userData);
     }
   },

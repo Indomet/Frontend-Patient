@@ -75,8 +75,9 @@
   import Appointment from './Appointment.vue';
   import Profile from './Profile.vue';
   import Inbox from './Inbox.vue';
-  import { getToken,logout } from '@/utils/auth'
-
+  import { getToken, logout} from '@/utils/auth';
+  //import { mapActions } from 'vuex';mapActions
+  
 
 
   export default {
@@ -108,7 +109,7 @@
   },
 
     methods: {
-    logout() {
+      logout() {
         logout();
       }
 
