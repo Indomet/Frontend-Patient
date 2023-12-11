@@ -31,6 +31,7 @@ export const login = (email, password) => {
         password: password
     })
     .then((response) => {
+        console.log("response: ",response);
         const token = response.data.token;
         const userId = response.data.user.id;
         const user = response.data.user;
@@ -38,7 +39,7 @@ export const login = (email, password) => {
         localStorage.setItem('userId', userId); // save user id in localStorage
         localStorage.setItem('user', JSON.stringify(user)); // save user information in localStorage
         console.log("token: ",response.data.token);
-        console.log("userInfor: ",response.data.user);
+        console.log("user: ",response.data.user);
         Router.push('/userdashboard');
     })
     .catch((error) => {

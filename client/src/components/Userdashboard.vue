@@ -13,8 +13,8 @@
                 </a>
               </li>
               <li>
-                <a @click="showContent('booking')" href="#" class="nav-link px-0 align-middle">
-                  <i class="fs-4 bi-calendar2-event"></i> <span class="ms-1 d-none d-sm-inline">Booking</span>
+                <a @click="showContent('openstreetmap')" href="#" class="nav-link px-0 align-middle">
+                  <i class="fs-4 bi-calendar2-event"></i> <span class="ms-1 d-none d-sm-inline">Map</span>
                 </a>
               </li>
 
@@ -47,8 +47,8 @@
     </div>
     <div class="col py-3">
 
-        <div v-if="currentContent === 'booking'">
-          <Booking />
+        <div v-if="currentContent === 'openstreetmap'">
+          <Openstreetmap/>
         </div>
 
         <div v-if="currentContent === 'appointment'">
@@ -75,6 +75,7 @@
   import Appointment from './Appointment.vue';
   import Profile from './Profile.vue';
   import Inbox from './Inbox.vue';
+  import Openstreetmap from './Openstreetmap.vue';
   import { getToken, logout} from '@/utils/auth';
   //import { mapActions } from 'vuex';mapActions
 
@@ -86,7 +87,8 @@
       Booking,
       Appointment,
       Profile,
-      Inbox
+      Inbox,
+      Openstreetmap
 
     },
     setup() {

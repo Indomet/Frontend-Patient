@@ -1,122 +1,133 @@
 <template>
-
-    <div  class="m-3">
-    <div class=" mb-4">
-        <div class="card">
-            <div class="card-body text-white mailbox-widget pb-0" style="background-color: #567890;">
-                <h2 class="text-white pb-3">Appointment</h2>
+    <div class="m-3">
+        <div class=" mb-4">
+            <div class="card">
+                <div class="card-body text-white mailbox-widget pb-0" style="background-color: #567890;">
+                    <h2 class="text-white pb-3">Bookings</h2>
 
                 </div>
-      </div>
-    </div>
-    <div class="table-responsive">
-      <table class="table custom-table">
-        <thead class="table-light sticky-header">
-          <tr>
-            <th scope="col">#</th>
-            <th scope="col">Date</th>
-            <th scope="col">Time</th>
-            <th scope="col">Clinic</th>
-            <th scope="col">Address</th>
-            <th scope="col">Message</th>
-            <th scope="col">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="(item, index) in items" :key="item.id">
-            <th scope="row">{{ index + 1 }}</th>
-            <td>{{ item.date }}</td>
-            <td>{{ item.time }}</td>
-            <td>{{ item.clinic }}</td>
-            <td>{{ item.address }}</td>
-            <td>{{ item.message }}</td>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table class="table custom-table">
+                <thead class="table-light sticky-header">
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Date</th>
+                        <th scope="col">Time</th>
+                        <th scope="col">Clinic</th>
+                        <th scope="col">Message</th>
+                        <th scpop="col">Status</th>
+                        <th scope="col">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="(item, index) in bookings" :key="item.id">
+                        <th scope="row">{{ index + 1 }}</th>
+                        <td>{{ item.date }}</td>
+                        <td>{{ item.time }}</td>
+                        <td>{{ item.dentistName }}</td>
+                        <td>{{ item.message }}</td>
+                        <td>{{ item.status }}</td>
 
-            <td>
-              <button class="btn btn-danger" @click="cancelIterms(item.id)">Cancel</button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+
+                        <td>
+                            <button v-if="item.status!='CANCELED'" class="btn btn-danger" @click="cancelBooking(item._id)">Cancel</button>
+                            <p v-else>N/A</p>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
-  </div>
 </template>
 
 <script>
 import axios from 'axios';
 
 export default {
-  name: 'AppointmentTable',
-  data() {
-    return {
-      items: [],
-      // showBoookings: true,
-    };
-  },
-  mounted() {
-    this.fetchIterms();
-  },
-  methods: {
-    async fetchIterms() {
-  try {
-    const token = localStorage.getItem('authToken');
-    const response = await axios.get('/api/user/booking', {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    });
-
-    if (response.status === 200 && response.data.items) {
-      this.items = response.data.items;
-      // this.showBoookings = false;
-      console.log(this.items);
-    }
-  } catch (error) {
-    console.error('Error bookings', error);
-    // this.showBoookings = false;
-  }
-},
-
-    cancelIterms(itemId) {
-      axios.delete(`/iterms/${itemId}`).then(response => {
-        console.log(response.data);
-        if (response.status === 200) {
-          this.items = this.items.filter(items => items.id !== itemId);
-        }
-      }).catch(error => {
-        console.error('Error:', error);
-      });
+    name: 'AppointmentTable',
+    data() {
+        return {
+            bookings: [],
+            userId: localStorage.getItem('userId'),
+            token: localStorage.getItem('token')
+        };
     },
+    mounted() {
+        this.fetchBookings();
+    },
+    methods: {
+        fetchBookings() {
+            var temp = []
+                console.log(this.userId)
+                axios.get(`http://localhost:8081/api/v1/bookings/patient/${this.userId}`, {
+                    headers: {
+                        Authorization: this.token
+                    }
+                })
+                .then(response => {
+                    console.log("Response", response)
+                    if (response.status === 200) {
+                        for(const each of response.data){
+                            temp.push(each)
+                        }
+                        console.log(this.bookings)
+                        this.bookings = temp
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Error fetching bookings');
+                });
+        },
 
-  }
+        cancelBooking(bookingId) {
+            axios.patch(`http://127.0.0.1:8081/api/v1/bookings/${bookingId}`, {
+                status: 'CANCELED'
+            })
+            .then(() => {
+                alert('Booking canceled successfully');
+                this.fetchBookings();
+            })
+            .catch((error) => {
+                console.error(error);
+                alert('Error canceling booking');
+            });
+
+        }
+
+    }
 }
 
 </script>
 
 <style>
 .sticky-header {
-  position: sticky;
-  top: 0;
-  background-color: white;
-  z-index: 20;
+    position: sticky;
+    top: 0;
+    background-color: white;
+    z-index: 20;
 }
 
 .text-center {
-  margin-bottom: 32rem;
+    margin-bottom: 32rem;
 }
+
 .custom-table {
-  min-width: 50vw;
+    min-width: 50vw;
 }
 
 
 .table td,
 .table th {
-  padding: 1rem;
+    padding: 1rem;
 }
 
 
 .table th,
 .table td {
-  font-size: 1.25rem;
+    font-size: 1.25rem;
 }
 </style>
 

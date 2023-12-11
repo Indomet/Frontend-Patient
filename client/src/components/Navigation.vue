@@ -15,9 +15,6 @@
                         <a href="#service" class="nav-link">Services</a>
                     </li>
                     <li class="nav-item">
-                        <a href="#bookings" class="nav-link">Booking</a>
-                    </li>
-                    <li class="nav-item">
                         <a href="#map" class="nav-link">Our Locations</a>
                     </li>
                     <li class="nav-item">

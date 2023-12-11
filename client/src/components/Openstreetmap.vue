@@ -12,6 +12,7 @@ import "/node_modules/mapbox-gl/dist/mapbox-gl.css"; // remove this later to tes
 import mapboxgl from "mapbox-gl";
 import axios from "axios";
 mapboxgl.accessToken = import.meta.env.VITE_MAPBOX;
+
 export default {
   data() {
     return {
@@ -32,10 +33,12 @@ export default {
     this.currentLocation();
     this.addLocation();
   },
+
   unmounted() {
     this.mapContainer.remove();
     this.mapContainer = null;
   },
+
   methods: {
     async addLocation() {
       try {
