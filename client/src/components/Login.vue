@@ -38,13 +38,15 @@
           </button>
         </div>
       </form>
-        <div class="signup-link" > <a href="/register" >Sign up</a>
-      </div>
+      <div style="display: flex; justify-content: space-between; margin: 0 30px;">
+        <div style="text-align: left; display: inline;"><a href="/">Back to home</a></div>
+        <div style="text-align: right; display: inline;" > <a href="/register" >Sign up</a></div>
+        </div>
     </div>
   </div>
 </template>
-  
-  <script>
+
+<script scoped>
 //import axiosInstance from "@/axios.js";
 import { login } from '../utils/auth'
 
@@ -54,7 +56,7 @@ export default {
   data() {
     return {
       email: "",
-      password: "",
+      password: ""
     };
   },
   computed: {
@@ -64,20 +66,20 @@ export default {
   },
 
   methods: {
-      async login() {
+        async login() {
             login(this.email, this.password);
-        },
-    },
-  
+        }
+    }
+
 };
+
 </script>
-  
+
 
 
 <style scoped>
   .login-form {
     width: 450px;
-    margin: 100px auto;
     text-align: center;
     border: 1px solid #eee;
     padding: 30px 0 50px 0;
@@ -88,7 +90,7 @@ export default {
   margin-left: 280px;
 }
 .input-group-text, .form-control {
-  height: 44px; 
+  height: 44px;
 }
 
 #app {
@@ -109,5 +111,4 @@ export default {
   }
 
 </style>
-  
-  
+

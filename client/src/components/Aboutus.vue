@@ -22,22 +22,21 @@
             Join us in our mission to keep Gothenburg smiling brightly. Explore our website today to find your perfect dental care partner and schedule your appointment with ease.
           </p>
         </div>
-     
+
   </template>
-  
+
   <script>
   export default {
     name: 'AboutUs',
     // Component logic goes here
   };
   </script>
-  
+
   <style>
   .about-us-header {
   background-color: rgb(211, 222, 222); /* Replace with your desired color */
-  
+
   padding: 0.5rem; /* Adjust padding as needed */
   border-radius: 0.25rem; /* Optional: adds rounded corners */
 }
   </style>
-  
