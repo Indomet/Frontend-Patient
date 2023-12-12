@@ -34,7 +34,8 @@
                         <td>{{ item.message }}</td>
                         <td>{{ item.status }}</td>
                         <td>
-                            <button v-if="item.status!='CANCELED'" class="btn btn-danger" @click="cancelBooking(item._id)">Cancel</button>
+                            <button v-if="item.status != 'CANCELED'" class="btn btn-danger"
+                                @click="cancelBooking(item)">Cancel</button>
                             <p v-else>N/A</p>
                         </td>
                     </tr>
@@ -54,7 +55,7 @@ export default {
             bookings: [],
             userId: localStorage.getItem('userId'),
             token: localStorage.getItem('token'),
-            showCancelled: true
+            showCancelled: false
         };
     },
     computed: {
@@ -72,16 +73,16 @@ export default {
     methods: {
         fetchBookings() {
             var temp = []
-                console.log(this.userId)
-                axios.get(`http://localhost:8081/api/v1/bookings/patient/${this.userId}`, {
-                    headers: {
-                        Authorization: this.token
-                    }
-                })
+            console.log(this.userId)
+            axios.get(`http://localhost:8081/api/v1/bookings/patient/${this.userId}`, {
+                headers: {
+                    Authorization: this.token
+                }
+            })
                 .then(response => {
                     console.log("Response", response)
                     if (response.status === 200) {
-                        for(const each of response.data){
+                        for (const each of response.data) {
                             temp.push(each)
                         }
                         console.log(this.bookings)
@@ -94,18 +95,30 @@ export default {
                 });
         },
 
-        cancelBooking(bookingId) {
-            axios.patch(`http://127.0.0.1:8081/api/v1/bookings/${bookingId}`, {
+        cancelBooking(booking) {
+            console.log('Booking:', booking)
+
+            axios.patch(`http://127.0.0.1:8081/api/v1/bookings/${booking._id}`, {
                 status: 'CANCELED'
             })
-            .then(() => {
-                alert('Booking canceled successfully');
-                this.fetchBookings();
-            })
-            .catch((error) => {
-                console.error(error);
-                alert('Error canceling booking');
-            });
+                .then(() => {
+                    axios.post('http://127.0.0.1:8081/api/v1/bookings/', {
+                        patientName: '',
+                        dentistName: booking.dentistName,
+                        dentistID: booking.dentistID,
+                        date: booking.date,
+                        time: booking.time,
+                        status: 'AVAILABLE'
+                    }).then(() => {
+                        alert('Booking canceled successfully');
+                        this.fetchBookings();
+                    })
+                })
+
+                .catch((error) => {
+                    console.error(error);
+                    alert('Error canceling booking');
+                });
 
         }
 
