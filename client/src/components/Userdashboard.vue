@@ -4,8 +4,9 @@
 
         <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 backgroud">
           <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100">
+            <span class="fs-5 d-none d-sm-inline">Hello, {{ currentUser.first_name.charAt(0).toUpperCase() + currentUser.first_name.slice(1) }}</span>
+            <hr style="background-color: white; width: 100%; height: 2px; margin-top: 2px; margin-bottom: 2px;">
             <span class="fs-5 d-none d-sm-inline">Dashboard</span>
-
             <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu">
               <li class="nav-item">
                 <a href="/" class="nav-link align-middle px-0">
@@ -14,23 +15,23 @@
               </li>
               <li>
                 <a @click="showContent('openstreetmap')" href="#" class="nav-link px-0 align-middle">
-                  <i class="fs-4 bi-calendar2-event"></i> <span class="ms-1 d-none d-sm-inline">Map</span>
+                  <i class="fs-4 bi-calendar2-event"></i> <span class="ms-1 d-none d-sm-inline">Schedule appointments</span>
                 </a>
               </li>
 
 
               <li>
                 <a @click="showContent('appointment')" href="#" class="nav-link px-0 align-middle">
-                  <i class="fs-4 bi-table"></i> <span class="ms-1 d-none d-sm-inline">Appointments</span>
+                  <i class="fs-4 bi-table"></i> <span class="ms-1 d-none d-sm-inline">My Appointments</span>
                 </a>
               </li>
-
+<!--
               <li>
                 <a @click="showContent('message')" href="#" class="nav-link px-0 align-middle">
                   <i class="fs-4 bi-chat-dots"></i> <span class="ms-1 d-none d-sm-inline">Notifications</span>
                 </a>
               </li>
-
+-->
               <li>
                 <a @click="showContent('profile')" href="#" class="nav-link px-0 align-middle">
                   <i class="fs-4 bi-person-circle"></i> <span class="ms-1 d-none d-sm-inline">Profile</span>
@@ -54,10 +55,10 @@
         <div v-if="currentContent === 'appointment'">
           <Appointment />
         </div>
-
+<!--
         <div v-if="currentContent === 'message'">
           <Inbox />
-        </div>
+        </div>-->
 
         <div v-if="currentContent === 'profile'">
           <Profile/>
@@ -90,6 +91,11 @@
       Inbox,
       Openstreetmap
 
+    },
+    data(){
+        return {
+            currentUser: JSON.parse(localStorage.getItem('user')),
+        }
     },
     setup() {
       const currentContent = ref('appointment');
