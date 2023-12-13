@@ -90,20 +90,17 @@ export default {
       if (this.visitReason.trim() !== '') {
         // Handle your confirmation logic here
         console.log(this.user);
-
-        const patientName = this.user.first_name + ' ' + this.user.last_name;
-
-        console.log(patientName);
-
-        console.log(this.user.id);
+        console.log('email: ', this.user.email);
 
         axios.patch(`http://127.0.0.1:8081/api/v1/bookings/${this.bookingToConfirm._id}`, {
           status: 'BOOKED',
           patientID: this.user.id,
-          patientName: this.patientName,
+          patientName: this.user.first_name + ' ' + this.user.last_name,
+          patientEmail: this.user.email,
           message: this.visitReason,
         })
           .then((response) => {
+            console.log('response: ', response);
             // this.responseMessage = "Booking successful.";
             alert("Booking sucessful")
             this.error = null;
@@ -216,10 +213,10 @@ export default {
       const deleteBtn = this.createDeleteButton(clinic._id);
 
       popupContent.innerHTML = `<strong>Clinic Name:</strong> ${clinic.clinicName}<br>${clinic.location.formattedAddress}`;
-      popupContent.appendChild(document.createTextNode(' '));
-      popupContent.appendChild(editBtn);
-      popupContent.appendChild(document.createTextNode(' '));
-      popupContent.appendChild(deleteBtn);
+      // popupContent.appendChild(document.createTextNode(' '));
+      // popupContent.appendChild(editBtn);
+      // popupContent.appendChild(document.createTextNode(' '));
+      // popupContent.appendChild(deleteBtn);
 
       return popupContent;
     },
@@ -413,6 +410,7 @@ export default {
         .then(() => {
           axios.post('http://127.0.0.1:8081/api/v1/bookings/', {
             patientName: '',
+            patientEmail: '',
             dentistName: booking.dentistName,
             dentistID: booking.dentistID,
             date: booking.date,
