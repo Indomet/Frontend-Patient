@@ -4,7 +4,7 @@
 
         <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 backgroud">
           <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100">
-            <span class="fs-5 d-none d-sm-inline">Hello, {{ currentUser.first_name.charAt(0).toUpperCase() + currentUser.first_name.slice(1) }}</span>
+            <span class="fs-5 d-none d-sm-inline">ToothCheck.App</span>
             <hr style="background-color: white; width: 100%; height: 2px; margin-top: 2px; margin-bottom: 2px;">
             <span class="fs-5 d-none d-sm-inline">Dashboard</span>
             <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu">
