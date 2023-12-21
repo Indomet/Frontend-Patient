@@ -33,13 +33,20 @@
               <th>Action</th>
             </tr>
           </thead>
+          <select v-model="selectedDateFilter">
+            <option value="2weeks">Next 2 Weeks</option>
+            <option value="1month">Next Month</option>
+            <option value="3months">Next 3 Months</option>
+            <option value="All">All</option>
+          </select>
           <tbody>
             <tr v-for="booking in bookings" :key="booking._id">
               <td>{{ booking.dentistName }}</td>
-              <td>{{ booking.date }}</td>
+              <td>{{ formatDate(booking.date) }}</td>
               <td>{{ booking.time }}</td>
               <td>{{ booking.status }}</td>
-              <td> <button style="width: 80%; display: flex; justify-content: center;" class="btn btn-success" @click="openForm(booking)">BOOK</button> </td>
+              <td> <button style="width: 80%; display: flex; justify-content: center;" class="btn btn-success"
+                  @click="openForm(booking)">BOOK</button> </td>
             </tr>
           </tbody>
         </table>
@@ -73,7 +80,17 @@ export default {
       visitReason: '', // To store the reason for the visit
       bookingToConfirm: null, // To store the booking data
       showForm: false,
+      selectedDateFilter: '2weeks',
+      selectedClinic: null,
     };
+  },
+  watch: {
+    selectedDateFilter() {
+
+      if (this.selectedClinic) {
+        this.showClinicInformation(this.selectedClinic);
+      }
+    },
   },
   mounted() {
     this.initializeMap();
@@ -86,6 +103,10 @@ export default {
     }
   },
   methods: {
+    formatDate(date) {
+      const formattedDate = new Date(date);
+      return formattedDate.toISOString().split('T')[0];
+    },
     confirmBooking() {
       if (this.visitReason.trim() !== '') {
         // Handle your confirmation logic here
@@ -179,6 +200,7 @@ export default {
         // Add click event listener to the marker
         marker.getElement().addEventListener('click', () => {
           this.showClinicInformation(clinic);
+          this.selectedClinic = clinic;
         });
 
         this.markers.push(marker);
@@ -191,7 +213,8 @@ export default {
       console.log(localStorage.getItem('dentistId'));
       localStorage.setItem('dentistName', clinic.dentistName);
 
-      axios.get(`http://localhost:8081/api/v1/bookings/dentist/available/${clinic.dentistId}`)
+      console.log('About to make axios request');
+      axios.get(`http://localhost:8081/api/v1/bookings/dentist/available/${clinic.dentistId}?dateFilter=${this.selectedDateFilter}`)
         .then(response => {
           const clinicInfo = response.data;
           console.log('Clinic Information:', clinicInfo);
