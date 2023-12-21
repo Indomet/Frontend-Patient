@@ -48,9 +48,20 @@
               <td> <button style="width: 80%; display: flex; justify-content: center;" class="btn btn-success"
                   @click="openForm(booking)">BOOK</button> </td>
             </tr>
+            
           </tbody>
         </table>
       </div>
+    </div>
+    <div class="pagination">
+      <button 
+        v-for="page in totalPages" 
+        :key="page" 
+        @click="changePage(page)" 
+        :class="{ active: currentPage === page }"
+      >
+        {{ page }}
+      </button>
     </div>
     <div id="mapContainer" ref="mapContainer"></div>
   </div>
@@ -82,6 +93,8 @@ export default {
       showForm: false,
       selectedDateFilter: '2weeks',
       selectedClinic: null,
+      currentPage: 1,
+      totalPages: 0,
     };
   },
   watch: {
@@ -103,6 +116,13 @@ export default {
     }
   },
   methods: {
+    changePage(page) {
+      this.currentPage = page;
+      if (this.selectedClinic) {
+        this.showClinicInformation(this.selectedClinic);
+      }
+    },
+
     formatDate(date) {
       const formattedDate = new Date(date);
       return formattedDate.toISOString().split('T')[0];
@@ -214,9 +234,9 @@ export default {
       localStorage.setItem('dentistName', clinic.dentistName);
 
       console.log('About to make axios request');
-      axios.get(`http://localhost:8081/api/v1/bookings/dentist/available/${clinic.dentistId}?dateFilter=${this.selectedDateFilter}`)
+      axios.get(`http://localhost:8081/api/v1/bookings/dentist/available/${clinic.dentistId}?dateFilter=${this.selectedDateFilter}&page=${this.currentPage}`)
         .then(response => {
-          const clinicInfo = response.data;
+          const clinicInfo = response.data.bookings;
           console.log('Clinic Information:', clinicInfo);
 
           // Use a temporary variable for better code readability
@@ -224,6 +244,7 @@ export default {
 
           // Update the state property
           this.bookings = updatedBookings;
+          this.totalPages = response.data.totalPages;
         })
         .catch(error => {
           console.error('Error fetching clinic information:', error);
@@ -484,5 +505,26 @@ export default {
   background-color: rgb(211, 222, 222);
   padding: 0.5rem;
   border-radius: 0.25rem;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.pagination button {
+  margin: 0 5px;
+  padding: 10px 20px;
+  border: none;
+  background-color: #f8f9fa;
+  cursor: pointer;
+  text-align: center;
+}
+
+.pagination button.active {
+  background-color: #007bff;
+  color: white;
 }
 </style>
