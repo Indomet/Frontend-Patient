@@ -48,21 +48,30 @@
               <td> <button style="width: 80%; display: flex; justify-content: center;" class="btn btn-success"
                   @click="openForm(booking)">BOOK</button> </td>
             </tr>
-            
+
           </tbody>
+
         </table>
+        <div class="pagination">
+          <button @click="prevSection" :disabled="currentSection === 1">Prev</button>
+          <button v-for="page in totalPages" :key="page" @click="changePage(page)"
+            :class="{ active: currentPage === page }">
+            {{ page }}
+          </button>
+        </div>
+        <div class="pagination">
+          <button @click="prevSection" :disabled="currentSection === 1">
+          </button>
+          <button v-for="page in pagesInCurrentSection" :key="page" @click="changePage(page)"
+            :class="{ active: currentPage === page }">
+            {{ page }}
+          </button>
+          <button @click="nextSection" :disabled="currentSection === Math.ceil(totalPages / pagesPerSection)"> >
+          </button>
+        </div>
       </div>
     </div>
-    <div class="pagination">
-      <button 
-        v-for="page in totalPages" 
-        :key="page" 
-        @click="changePage(page)" 
-        :class="{ active: currentPage === page }"
-      >
-        {{ page }}
-      </button>
-    </div>
+
     <div id="mapContainer" ref="mapContainer"></div>
   </div>
 </template>
@@ -94,10 +103,20 @@ export default {
       selectedDateFilter: '2weeks',
       selectedClinic: null,
       currentPage: 1,
+      pagesPerSection: 5,
+      currentSection: 1,
       totalPages: 0,
     };
   },
+  computed: {
+    pagesInCurrentSection() {
+      const startPage = (this.currentSection - 1) * this.pagesPerSection + 1;
+      const endPage = Math.min(this.currentSection * this.pagesPerSection, this.totalPages);
+      return Array.from({ length: endPage - startPage + 1 }, (_, i) => startPage + i);
+    },
+  },
   watch: {
+
     selectedDateFilter() {
 
       if (this.selectedClinic) {
@@ -118,11 +137,27 @@ export default {
   methods: {
     changePage(page) {
       this.currentPage = page;
+      this.currentSection = Math.ceil(page / this.pagesPerSection);
       if (this.selectedClinic) {
         this.showClinicInformation(this.selectedClinic);
       }
     },
-
+    nextSection() {
+      if (this.currentSection * this.pagesPerSection < this.totalPages) {
+        this.currentSection++;
+        if (this.selectedClinic) {
+          this.showClinicInformation(this.selectedClinic);
+        }
+      }
+    },
+    prevSection() {
+      if (this.currentSection > 1) {
+        this.currentSection--;
+        if (this.selectedClinic) {
+          this.showClinicInformation(this.selectedClinic);
+        }
+      }
+    },
     formatDate(date) {
       const formattedDate = new Date(date);
       return formattedDate.toISOString().split('T')[0];
