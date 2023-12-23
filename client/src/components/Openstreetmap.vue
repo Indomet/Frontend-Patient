@@ -48,25 +48,16 @@
               <td> <button style="width: 80%; display: flex; justify-content: center;" class="btn btn-success"
                   @click="openForm(booking)">BOOK</button> </td>
             </tr>
-
           </tbody>
-
         </table>
         <div class="pagination">
-          <button @click="prevSection" :disabled="currentSection === 1">Prev</button>
-          <button v-for="page in totalPages" :key="page" @click="changePage(page)"
-            :class="{ active: currentPage === page }">
-            {{ page }}
-          </button>
-        </div>
-        <div class="pagination">
           <button @click="prevSection" :disabled="currentSection === 1">
-          </button>
+            Prev</button>
           <button v-for="page in pagesInCurrentSection" :key="page" @click="changePage(page)"
             :class="{ active: currentPage === page }">
             {{ page }}
           </button>
-          <button @click="nextSection" :disabled="currentSection === Math.ceil(totalPages / pagesPerSection)"> >
+          <button @click="nextSection" :disabled="currentSection === Math.ceil(totalPages / pagesPerSection)"> Next
           </button>
         </div>
       </div>
