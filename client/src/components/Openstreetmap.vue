@@ -42,7 +42,7 @@
           <tbody>
             <tr v-for="booking in bookings" :key="booking._id">
               <td>{{ booking.dentistName }}</td>
-              <td>{{ formatDate(booking.date) }}</td>
+              <td>{{ booking.date }}</td>
               <td>{{ booking.time }}</td>
               <td>{{ booking.status }}</td>
               <td> <button style="width: 80%; display: flex; justify-content: center;" class="btn btn-success"
@@ -148,10 +148,6 @@ export default {
           this.showClinicInformation(this.selectedClinic);
         }
       }
-    },
-    formatDate(date) {
-      const formattedDate = new Date(date);
-      return formattedDate.toISOString().split('T')[0];
     },
     confirmBooking() {
       if (this.visitReason.trim() !== '') {
@@ -262,6 +258,7 @@ export default {
       console.log('About to make axios request');
       axios.get(`http://localhost:8081/api/v1/bookings/dentist/available/${clinic.dentistId}?dateFilter=${this.selectedDateFilter}&page=${this.currentPage}`)
         .then(response => {
+          console.log('Response from axios request:', response);
           const clinicInfo = response.data.bookings;
           console.log('Clinic Information:', clinicInfo);
 
