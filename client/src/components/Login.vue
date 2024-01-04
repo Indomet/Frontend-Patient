@@ -39,8 +39,8 @@
         </div>
       </form>
       <div style="display: flex; justify-content: space-between; margin: 0 30px;">
-        <div style="text-align: left; display: inline;"><a href="/">Back to home</a></div>
-        <div style="text-align: right; display: inline;" > <a href="/register" >Sign up</a></div>
+        <div style="text-align: left; display: inline;"><router-link to="/">Back to home</router-link></div>
+        <div style="text-align: right; display: inline;" > <router-link to="/register" >Sign up</router-link></div>
         </div>
     </div>
   </div>

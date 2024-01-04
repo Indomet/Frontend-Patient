@@ -52,6 +52,8 @@
 <script>
 
 import axios from 'axios';
+const API_GATEWAY = import.meta.env.VITE_API_GATEWAY;
+
 import { getToken } from '@/utils/auth';
 //import { mapState, mapMutations } from 'vuex';
 
@@ -63,7 +65,7 @@ import { getToken } from '@/utils/auth';
     async mounted() {
         try {
             const token = getToken();
-            const response = await axios.get(`http://localhost:8000/api/v1/patients/${this.userId}`, {
+            const response = await axios.get(`http://${API_GATEWAY}:8000/api/v1/patients/${this.userId}`, {
                 headers: {
                     Authorization: token
                 }
@@ -84,7 +86,7 @@ import { getToken } from '@/utils/auth';
                     phone_number: this.user.phone_number,
                 };
                 const token = getToken();
-                const response = await axios.patch(`http://localhost:8000/api/v1/patients/${this.userId}/`, updatedData, {
+                const response = await axios.patch(`http://${API_GATEWAY}:8000/api/v1/patients/${this.userId}/`, updatedData, {
                     headers: {
                         Authorization: token
                     }
@@ -112,7 +114,7 @@ export default {
     async mounted() {
         try {
 
-            const response = await axios.get(`http://localhost:80/api/v1/patients/${this.userId}`, {
+            const response = await axios.get(`http://${API_GATEWAY}:80/api/v1/patients/${this.userId}`, {
                 headers: {
                     Authorization: getToken()
                 }
@@ -139,7 +141,7 @@ export default {
                 phone_number: this.user.phone_number,
             }
 
-            axios.patch(`http://localhost:80/api/v1/patients/${this.userId}/`, updatedData, {
+            axios.patch(`http://${API_GATEWAY}:80/api/v1/patients/${this.userId}/`, updatedData, {
                 headers: {
                     Authorization: getToken()
                 }
