@@ -74,7 +74,7 @@ export default {
         fetchBookings() {
             var temp = []
             console.log(this.userId)
-            axios.get(`http://localhost:8081/api/v1/bookings/patient/${this.userId}`, {
+            axios.get(`http://localhost:80/api/v1/bookings/patient/${this.userId}`, {
                 headers: {
                     Authorization: this.token
                 }
@@ -98,11 +98,11 @@ export default {
         cancelBooking(booking) {
             console.log('Booking:', booking)
 
-            axios.patch(`http://127.0.0.1:8081/api/v1/bookings/${booking._id}`, {
+            axios.patch(`http://localhost:80/api/v1/bookings/${booking._id}`, {
                 status: 'CANCELED'
             })
                 .then(() => {
-                    axios.post('http://127.0.0.1:8081/api/v1/bookings/', {
+                    axios.post('http://localhost:80/api/v1/bookings/', {
                         patientName: '',
                         dentistName: booking.dentistName,
                         dentistID: booking.dentistID,

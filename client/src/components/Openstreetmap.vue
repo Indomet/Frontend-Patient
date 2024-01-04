@@ -33,36 +33,18 @@
               <th>Action</th>
             </tr>
           </thead>
-          <select v-model="selectedDateFilter">
-            <option value="2weeks">Next 2 Weeks</option>
-            <option value="1month">Next Month</option>
-            <option value="3months">Next 3 Months</option>
-            <option value="All">All</option>
-          </select>
           <tbody>
             <tr v-for="booking in bookings" :key="booking._id">
               <td>{{ booking.dentistName }}</td>
               <td>{{ booking.date }}</td>
               <td>{{ booking.time }}</td>
               <td>{{ booking.status }}</td>
-              <td> <button style="width: 80%; display: flex; justify-content: center;" class="btn btn-success"
-                  @click="openForm(booking)">BOOK</button> </td>
+              <td> <button style="width: 80%; display: flex; justify-content: center;" class="btn btn-success" @click="openForm(booking)">BOOK</button> </td>
             </tr>
           </tbody>
         </table>
-        <div class="pagination">
-          <button @click="prevSection" :disabled="currentSection === 1">
-            Prev</button>
-          <button v-for="page in pagesInCurrentSection" :key="page" @click="changePage(page)"
-            :class="{ active: currentPage === page }">
-            {{ page }}
-          </button>
-          <button @click="nextSection" :disabled="currentSection === Math.ceil(totalPages / pagesPerSection)"> Next
-          </button>
-        </div>
       </div>
     </div>
-
     <div id="mapContainer" ref="mapContainer"></div>
   </div>
 </template>
@@ -91,29 +73,7 @@ export default {
       visitReason: '', // To store the reason for the visit
       bookingToConfirm: null, // To store the booking data
       showForm: false,
-      selectedDateFilter: '2weeks',
-      selectedClinic: null,
-      currentPage: 1,
-      pagesPerSection: 5,
-      currentSection: 1,
-      totalPages: 0,
     };
-  },
-  computed: {
-    pagesInCurrentSection() {
-      const startPage = (this.currentSection - 1) * this.pagesPerSection + 1;
-      const endPage = Math.min(this.currentSection * this.pagesPerSection, this.totalPages);
-      return Array.from({ length: endPage - startPage + 1 }, (_, i) => startPage + i);
-    },
-  },
-  watch: {
-
-    selectedDateFilter() {
-
-      if (this.selectedClinic) {
-        this.showClinicInformation(this.selectedClinic);
-      }
-    },
   },
   mounted() {
     this.initializeMap();
@@ -126,36 +86,13 @@ export default {
     }
   },
   methods: {
-    changePage(page) {
-      this.currentPage = page;
-      this.currentSection = Math.ceil(page / this.pagesPerSection);
-      if (this.selectedClinic) {
-        this.showClinicInformation(this.selectedClinic);
-      }
-    },
-    nextSection() {
-      if (this.currentSection * this.pagesPerSection < this.totalPages) {
-        this.currentSection++;
-        if (this.selectedClinic) {
-          this.showClinicInformation(this.selectedClinic);
-        }
-      }
-    },
-    prevSection() {
-      if (this.currentSection > 1) {
-        this.currentSection--;
-        if (this.selectedClinic) {
-          this.showClinicInformation(this.selectedClinic);
-        }
-      }
-    },
     confirmBooking() {
       if (this.visitReason.trim() !== '') {
         // Handle your confirmation logic here
         console.log(this.user);
         console.log('email: ', this.user.email);
 
-        axios.patch(`http://127.0.0.1:8081/api/v1/bookings/${this.bookingToConfirm._id}`, {
+        axios.patch(`http://localhost:80/api/v1/bookings/${this.bookingToConfirm._id}`, {
           status: 'BOOKED',
           patientID: this.user.id,
           patientName: this.user.first_name + ' ' + this.user.last_name,
@@ -217,7 +154,7 @@ export default {
     },
     async getLocation() {
       try {
-        const response = await axios.get("http://localhost:3000/api/v1/clinics");
+        const response = await axios.get("http://localhost:80/api/v1/clinics");
         this.clinicsData = response.data.clinics;
         console.log(response.data.clinics)
 
@@ -242,7 +179,6 @@ export default {
         // Add click event listener to the marker
         marker.getElement().addEventListener('click', () => {
           this.showClinicInformation(clinic);
-          this.selectedClinic = clinic;
         });
 
         this.markers.push(marker);
@@ -255,11 +191,9 @@ export default {
       console.log(localStorage.getItem('dentistId'));
       localStorage.setItem('dentistName', clinic.dentistName);
 
-      console.log('About to make axios request');
-      axios.get(`http://localhost:8081/api/v1/bookings/dentist/available/${clinic.dentistId}?dateFilter=${this.selectedDateFilter}&page=${this.currentPage}`)
+      axios.get(`http://localhost:80/api/v1/bookings/dentist/available/${clinic.dentistId}`)
         .then(response => {
-          console.log('Response from axios request:', response);
-          const clinicInfo = response.data.bookings;
+          const clinicInfo = response.data;
           console.log('Clinic Information:', clinicInfo);
 
           // Use a temporary variable for better code readability
@@ -267,7 +201,6 @@ export default {
 
           // Update the state property
           this.bookings = updatedBookings;
-          this.totalPages = response.data.totalPages;
         })
         .catch(error => {
           console.error('Error fetching clinic information:', error);
@@ -315,7 +248,7 @@ export default {
       try {
         const dentistToPatch = localStorage.getItem('dentistId');
         console.log('Updating dentist from postgres: ', dentistToPatch);
-        await axios.patch(`http://localhost:8000/api/v1/dentists/${dentistToPatch}/`, updatedClinic_postgres);
+        await axios.patch(`http://localhost:80/api/v1/dentists/${dentistToPatch}/`, updatedClinic_postgres);
         console.log("Clinic updated successfully:", dentistToPatch);
       } catch (error) {
         console.error("Error updating clinic:", error);
@@ -327,7 +260,7 @@ export default {
       };
 
       try {
-        await axios.patch(`http://localhost:3000/api/v1/clinics/${clinic._id}`, updatedClinic);
+        await axios.patch(`http://localhost:80/api/v1/clinics/${clinic._id}`, updatedClinic);
         console.log("Clinic updated successfully:", clinic._id);
         this.getLocation();
       } catch (error) {
@@ -390,7 +323,7 @@ export default {
       };
 
       try {
-        const response = await axios.post("http://localhost:3000/api/v1/clinics", data);
+        const response = await axios.post("http://localhost:80/api/v1/clinics", data);
         console.log(response);
         this.getLocation();
       } catch (error) {
@@ -402,13 +335,13 @@ export default {
       try {
         const dentistToDelete = localStorage.getItem('dentistId');
         console.log('Deleting this dentist from postgres: ', dentistToDelete);
-        await axios.delete(`http://localhost:8000/api/v1/dentists/${dentistToDelete}/`);
+        await axios.delete(`http://localhost:80/api/v1/dentists/${dentistToDelete}/`);
         console.log("Clinic deleted successfully:", dentistToDelete);
       } catch (error) {
         console.error("Error deleting clinic:", error);
       }
       try {
-        await axios.delete(`http://localhost:3000/api/v1/clinics/${clinicId}`);
+        await axios.delete(`http://localhost:80/api/v1/clinics/${clinicId}`);
         console.log("Clinic deleted successfully:", clinicId);
         this.getLocation();
       } catch (error) {
@@ -441,7 +374,7 @@ export default {
       const dentistName = localStorage.getItem('dentistName');
       this.newBooking.dentistID = dentistID;
       this.newBooking.dentistName = dentistName;
-      axios.post('http://127.0.0.1:8081/api/v1/bookings/', {
+      axios.post('http://localhost:80/api/v1/bookings/', {
         patientName: '',
         dentistName: this.newBooking.dentistName,
         dentistID: this.newBooking.dentistID,
@@ -459,7 +392,7 @@ export default {
     },
     getAllBookings() {
       let dentistID = localStorage.getItem('dentistID');
-      axios.get(`http://127.0.0.1:8081/api/v1/bookings/dentist/${dentistID}`)
+      axios.get(`http://localhost:80/api/v1/bookings/dentist/${dentistID}`)
         .then((response) => {
           this.bookings = response.data;
         })
@@ -470,12 +403,12 @@ export default {
     cancelAndReOpenBooking(booking) {
       console.log(booking)
       console.log(this.dentistName)
-      axios.patch(`http://127.0.0.1:8081/api/v1/bookings/${booking._id}`, {
+      axios.patch(`http://localhost:80/api/v1/bookings/${booking._id}`, {
         status: 'CANCELED'
 
       })
         .then(() => {
-          axios.post('http://127.0.0.1:8081/api/v1/bookings/', {
+          axios.post('http://localhost:80/api/v1/bookings/', {
             patientName: '',
             patientEmail: '',
             dentistName: booking.dentistName,
@@ -497,7 +430,7 @@ export default {
     cancelBooking(booking) {
       console.log(booking)
       console.log(this.dentistName)
-      axios.patch(`http://127.0.0.1:8081/api/v1/bookings/${booking._id}`, {
+      axios.patch(`http://localhost:80/api/v1/bookings/${booking._id}`, {
         status: 'CANCELED'
       })
         .then(() => {
@@ -528,26 +461,5 @@ export default {
   background-color: rgb(211, 222, 222);
   padding: 0.5rem;
   border-radius: 0.25rem;
-}
-
-.pagination {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 20px;
-}
-
-.pagination button {
-  margin: 0 5px;
-  padding: 10px 20px;
-  border: none;
-  background-color: #f8f9fa;
-  cursor: pointer;
-  text-align: center;
-}
-
-.pagination button.active {
-  background-color: #007bff;
-  color: white;
 }
 </style>

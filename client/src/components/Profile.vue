@@ -112,7 +112,7 @@ export default {
     async mounted() {
         try {
 
-            const response = await axios.get(`http://localhost:8000/api/v1/patients/${this.userId}`, {
+            const response = await axios.get(`http://localhost:80/api/v1/patients/${this.userId}`, {
                 headers: {
                     Authorization: getToken()
                 }
@@ -139,7 +139,7 @@ export default {
                 phone_number: this.user.phone_number,
             }
 
-            axios.patch(`http://localhost:8000/api/v1/patients/${this.userId}/`, updatedData, {
+            axios.patch(`http://localhost:80/api/v1/patients/${this.userId}/`, updatedData, {
                 headers: {
                     Authorization: getToken()
                 }
