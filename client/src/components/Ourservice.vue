@@ -1,6 +1,6 @@
 <template>
-    <div id="service" class="container col-xxl-10 px-4 py-5">
-        <div class="row  align-items-center g-5 py-5 mb-5">
+    <div id="service" class="container col-xxl-10 px-4 py-4">
+        <div class="row  align-items-center g-5 py-3 mb-5">
             <div class="col-lg-6 col-sm-8  ">
                 <img src="@/assets/07.png" class="d-block mx-lg-auto img-fluid" alt="Dental" >
             </div>

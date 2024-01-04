@@ -4,7 +4,7 @@
     import Homepage from '../components/Homepage.vue'
     import Ourservice from '../components/Ourservice.vue'
     import Aboutus from '../components/Aboutus.vue'
-    import Openstreetmap from '../components/Openstreetmap.vue'
+    import MapHomePage from '../components/MapHomePage.vue'
 </script>
 
 <template>
@@ -13,7 +13,7 @@
         <main>
             <Homepage/>
             <Ourservice/>
-            <Openstreetmap/>
+            <MapHomePage/>
             <Aboutus/>
         </main>
     </div>

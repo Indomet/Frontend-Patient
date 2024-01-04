@@ -52,7 +52,8 @@
   
   <script>
   import { ref ,onMounted } from 'vue';
-  import axios from 'axios'; 
+  import axios from 'axios';
+  const API_GATEWAY = import.meta.env.VITE_API_GATEWAY;
   
   export default {
     setup() {
@@ -72,7 +73,7 @@
     const fetchData = async () => {
       try {
         console.log('Attempting to get bookings from backend')
-        const response = await axios.get('http://localhost:8081/api/v1/bookings/');
+        const response = await axios.get(`http://${API_GATEWAY}:80/api/v1/bookings/`);
         console.log(response)
 
         clinics.value = response.data.dentistName;
@@ -85,7 +86,7 @@
     onMounted(fetchData);
     async function submitForm() {
       try {
-        const response = await axios.post(`http://localhost:8081/api/v1/bookings/${booking._id}`, appointment.value);
+        const response = await axios.post(`http://${API_GATEWAY}:80/api/v1/bookings/${booking._id}`, appointment.value);
         console.log('submitForm Response:', response.data);
         
       } catch (error) {

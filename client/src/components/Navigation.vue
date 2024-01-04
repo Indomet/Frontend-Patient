@@ -1,7 +1,7 @@
 <template>
     <nav id="mainNav" class="navbar navbar-expand-lg sticky-top custom-navbar">
         <div class="container-fluid">
-            <router-link to="/" class="navbar-brand">Sweden Dentist Clinics</router-link>
+            <router-link to="/" class="navbar-brand">ToothCheck App</router-link>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -23,9 +23,9 @@
                 </ul>
                 <div>
                     <div v-if="!isLoggedInC">
-                        <a href="/login"><button class="btn btn-primary me-2" style="width: 100px;">Login</button></a>
-                        <a href="/register"><button class="btn btn-outline-primary"
-                                style="width: 100px;">Sign-up</button></a>
+                        <router-link to="/login"><button class="btn btn-primary me-2" style="width: 100px;">Login</button></router-link>
+                        <router-link to="/register"><button class="btn btn-outline-primary"
+                                style="width: 100px;">Sign-up</button></router-link>
                     </div>
                     <div v-else>
                         <router-link to="/userdashboard" class="btn btn-primary me-2">Dashboard</router-link>

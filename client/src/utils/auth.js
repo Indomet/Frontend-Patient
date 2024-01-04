@@ -1,6 +1,8 @@
 import axios from 'axios';
 import Router from '../router';
 
+const API_GATEWAY = import.meta.env.VITE_API_GATEWAY;
+
 export const getToken = () => {
   const token = localStorage.getItem('token');
   return token;
@@ -16,7 +18,7 @@ export const clearToken = () => {
 
 export const register = async (userData) => {
   try {
-    const response = await axios.post('http://localhost:8000/api/v1/patients/', userData);
+    const response = await axios.post(`http://${API_GATEWAY}:80/api/v1/patients/`, userData);
     alert(`Email: ${userData.email} Registration successful!`);
     console.log('Registration successful:', response.data); // can got date here from backend
     Router.push('/login');
@@ -26,7 +28,7 @@ export const register = async (userData) => {
 }
 
 export const login = (email, password) => {
-    axios.post('http://localhost:8000/patient/login/', {
+    axios.post(`http://${API_GATEWAY}:80/patient/login/`, { 
         email: email,
         password: password
     })
@@ -50,7 +52,7 @@ export const login = (email, password) => {
 
 // export const login = async (email, password) => {
 //   try {
-//     const response = await axios.post('http://localhost:8000/patient/login/', {
+//     const response = await axios.post(`http://${API_GATEWAY}:8000/patient/login/', {
 //       email: email,
 //       password: password
 //     });
