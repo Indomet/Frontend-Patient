@@ -33,18 +33,36 @@
               <th>Action</th>
             </tr>
           </thead>
+          <select v-model="selectedDateFilter">
+            <option value="2weeks">Next 2 Weeks</option>
+            <option value="1month">Next Month</option>
+            <option value="3months">Next 3 Months</option>
+            <option value="All">All</option>
+          </select>
           <tbody>
             <tr v-for="booking in bookings" :key="booking._id">
               <td>{{ booking.dentistName }}</td>
               <td>{{ booking.date }}</td>
               <td>{{ booking.time }}</td>
               <td>{{ booking.status }}</td>
-              <td> <button style="width: 80%; display: flex; justify-content: center;" class="btn btn-success" @click="openForm(booking)">BOOK</button> </td>
+              <td> <button style="width: 80%; display: flex; justify-content: center;" class="btn btn-success"
+                  @click="openForm(booking)">BOOK</button> </td>
             </tr>
           </tbody>
         </table>
+        <div class="pagination">
+          <button @click="prevSection" :disabled="currentSection === 1">
+            Prev</button>
+          <button v-for="page in pagesInCurrentSection" :key="page" @click="changePage(page)"
+            :class="{ active: currentPage === page }">
+            {{ page }}
+          </button>
+          <button @click="nextSection" :disabled="currentSection === Math.ceil(totalPages / pagesPerSection)"> Next
+          </button>
+        </div>
       </div>
     </div>
+
     <div id="mapContainer" ref="mapContainer"></div>
   </div>
 </template>
@@ -73,7 +91,29 @@ export default {
       visitReason: '', // To store the reason for the visit
       bookingToConfirm: null, // To store the booking data
       showForm: false,
+      selectedDateFilter: '2weeks',
+      selectedClinic: null,
+      currentPage: 1,
+      pagesPerSection: 5,
+      currentSection: 1,
+      totalPages: 0,
     };
+  },
+  computed: {
+    pagesInCurrentSection() {
+      const startPage = (this.currentSection - 1) * this.pagesPerSection + 1;
+      const endPage = Math.min(this.currentSection * this.pagesPerSection, this.totalPages);
+      return Array.from({ length: endPage - startPage + 1 }, (_, i) => startPage + i);
+    },
+  },
+  watch: {
+
+    selectedDateFilter() {
+
+      if (this.selectedClinic) {
+        this.showClinicInformation(this.selectedClinic);
+      }
+    },
   },
   mounted() {
     this.initializeMap();
@@ -86,6 +126,29 @@ export default {
     }
   },
   methods: {
+    changePage(page) {
+      this.currentPage = page;
+      this.currentSection = Math.ceil(page / this.pagesPerSection);
+      if (this.selectedClinic) {
+        this.showClinicInformation(this.selectedClinic);
+      }
+    },
+    nextSection() {
+      if (this.currentSection * this.pagesPerSection < this.totalPages) {
+        this.currentSection++;
+        if (this.selectedClinic) {
+          this.showClinicInformation(this.selectedClinic);
+        }
+      }
+    },
+    prevSection() {
+      if (this.currentSection > 1) {
+        this.currentSection--;
+        if (this.selectedClinic) {
+          this.showClinicInformation(this.selectedClinic);
+        }
+      }
+    },
     confirmBooking() {
       if (this.visitReason.trim() !== '') {
         // Handle your confirmation logic here
@@ -179,6 +242,7 @@ export default {
         // Add click event listener to the marker
         marker.getElement().addEventListener('click', () => {
           this.showClinicInformation(clinic);
+          this.selectedClinic = clinic;
         });
 
         this.markers.push(marker);
@@ -191,9 +255,11 @@ export default {
       console.log(localStorage.getItem('dentistId'));
       localStorage.setItem('dentistName', clinic.dentistName);
 
-      axios.get(`http://localhost:8081/api/v1/bookings/dentist/available/${clinic.dentistId}`)
+      console.log('About to make axios request');
+      axios.get(`http://localhost:8081/api/v1/bookings/dentist/available/${clinic.dentistId}?dateFilter=${this.selectedDateFilter}&page=${this.currentPage}`)
         .then(response => {
-          const clinicInfo = response.data;
+          console.log('Response from axios request:', response);
+          const clinicInfo = response.data.bookings;
           console.log('Clinic Information:', clinicInfo);
 
           // Use a temporary variable for better code readability
@@ -201,6 +267,7 @@ export default {
 
           // Update the state property
           this.bookings = updatedBookings;
+          this.totalPages = response.data.totalPages;
         })
         .catch(error => {
           console.error('Error fetching clinic information:', error);
@@ -461,5 +528,26 @@ export default {
   background-color: rgb(211, 222, 222);
   padding: 0.5rem;
   border-radius: 0.25rem;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.pagination button {
+  margin: 0 5px;
+  padding: 10px 20px;
+  border: none;
+  background-color: #f8f9fa;
+  cursor: pointer;
+  text-align: center;
+}
+
+.pagination button.active {
+  background-color: #007bff;
+  color: white;
 }
 </style>
