@@ -35,7 +35,11 @@ const router = createRouter({
       name: 'userdashboard',
       component: Userdashboard,
       meta: {requiresAuth: true}
-    }
+    },
+    {
+      path: '/:catchAll(.*)',
+      redirect: '/'
+    },
     
   ]
 });
