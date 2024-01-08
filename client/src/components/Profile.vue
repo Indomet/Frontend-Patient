@@ -14,8 +14,8 @@
                                         <div class="col-md-12">
                                             <label class="labels">User Email</label>
                                             <span class="required">*</span>
-                                            <input type="email" class="form-control" placeholder="email" v-model="user.email"
-                                                required>
+                                            <input type="email" class="form-control" placeholder="email"
+                                                v-model="user.email" required>
                                         </div>
 
                                         <div class="col-md-12"><label class="labels">First Name</label>
@@ -55,54 +55,6 @@ import axios from 'axios';
 const API_GATEWAY = import.meta.env.VITE_API_GATEWAY;
 
 import { getToken } from '@/utils/auth';
-//import { mapState, mapMutations } from 'vuex';
-
-
-/*export default {
-    computed: {
-        ...mapState(['user', 'userId'])
-    },
-    async mounted() {
-        try {
-            const token = getToken();
-            const response = await axios.get(`http://${API_GATEWAY}:8000/api/v1/patients/${this.userId}`, {
-                headers: {
-                    Authorization: token
-                }
-            });
-            this.setUser(response.data);
-        } catch (error) {
-            console.error('Error fetching user:', error);
-        }
-    },
-    methods: {
-        ...mapMutations(['setUser']),
-        async updateProfile() {
-            try {
-                const updatedData = {
-                    email: this.user.email,
-                    first_name: this.user.first_name,
-                    last_name: this.user.last_name,
-                    phone_number: this.user.phone_number,
-                };
-                const token = getToken();
-                const response = await axios.patch(`http://${API_GATEWAY}:8000/api/v1/patients/${this.userId}/`, updatedData, {
-                    headers: {
-                        Authorization: token
-                    }
-                });
-                if (response.status === 200) {
-                    this.setUser({...response.data});
-                    alert('Profile updated successfully');
-                }
-            } catch (error) {
-                alert('Error updating profile');
-                console.error('Error:', error);
-            }
-
-        }
-    }
-}*/
 
 export default {
     data() {
@@ -111,27 +63,9 @@ export default {
             userId: localStorage.getItem('userId'),
         };
     },
-    async mounted() {
-        try {
-
-            const response = await axios.get(`http://${API_GATEWAY}:80/api/v1/patients/${this.userId}`, {
-                headers: {
-                    Authorization: getToken()
-                }
-            });
-            this.user = response.data;
-            console.log(this.user);
-        } catch (error) {
-            console.error('User not found', error);
-            console.log(error.response.data)
-            if (error.response) {
-                console.error('Error details:', error.response);
-            }
-        }
+    mounted() {
+        this.fetchData(); // Call the fetchData method from mounted
     },
-
-
-
     methods: {
         updateProfile() {
             const updatedData = {
@@ -148,22 +82,34 @@ export default {
             }).then(response => {
                 console.log(response.data);
                 if (response.status === 200) {
-
-                    //alert('Profile updated successfully');
-                    this.updateLocalUser(response.data);
-                    this.user = response.data;
-                    window.location.reload();
+                    localStorage.setItem('user', JSON.stringify(response.data));
+                    alert('Profile updated successfully.');
+                    //window.location.reload();
+                    this.fetchData();
                 }
 
             }).catch(error => {
                 alert('Error updating profile');
                 console.error('Error:', error);
             });
-
         },
-        updateLocalUser(userData) {
-            localStorage.setItem('user', JSON.stringify(userData));
-        }
+        async fetchData() {
+            try {
+                const response = await axios.get(`http://${API_GATEWAY}:80/api/v1/patients/${this.userId}`, {
+                    headers: {
+                        Authorization: getToken()
+                    }
+                });
+                this.user = response.data;
+                console.log(this.user);
+            } catch (error) {
+                console.error('User not found', error);
+                console.log(error.response.data)
+                if (error.response) {
+                    console.error('Error details:', error.response);
+                }
+            }
+        },
 
     }
 }
