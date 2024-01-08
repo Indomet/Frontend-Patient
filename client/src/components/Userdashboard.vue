@@ -4,9 +4,15 @@
 
         <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 backgroud">
           <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100">
-            <span class="fs-5 d-none d-sm-inline">ToothCheck.App</span>
+            <span class="fs-4 d-none d-sm-inline">
+              <div v-if="currentUser">
+                <h4>Hello, {{ currentUser }}</h4>
+              </div>
+              <div v-else>
+                ToothCheck App
+              </div>
+            </span>
             <hr style="background-color: white; width: 100%; height: 2px; margin-top: 2px; margin-bottom: 2px;">
-            <span class="fs-5 d-none d-sm-inline">Dashboard</span>
             <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu">
               <li class="nav-item">
                 <a href="/" class="nav-link align-middle px-0">
@@ -15,7 +21,7 @@
               </li>
               <li>
                 <a @click="showContent('openstreetmap')" href="#" class="nav-link px-0 align-middle">
-                  <i class="fs-4 bi-calendar2-event"></i> <span class="ms-1 d-none d-sm-inline">Schedule appointments</span>
+                  <i class="fs-4 bi-calendar2-event"></i> <span class="ms-1 d-none d-sm-inline">Schedule Appointments</span>
                 </a>
               </li>
 
@@ -75,7 +81,6 @@
   import Booking from './Booking.vue';
   import Appointment from './Appointment.vue';
   import Profile from './Profile.vue';
-  import Inbox from './Inbox.vue';
   import Openstreetmap from './Openstreetmap.vue';
   import { getToken, logout} from '@/utils/auth';
   //import { mapActions } from 'vuex';mapActions
@@ -88,13 +93,12 @@
       Booking,
       Appointment,
       Profile,
-      Inbox,
       Openstreetmap
 
     },
     data(){
         return {
-            currentUser: JSON.parse(localStorage.getItem('user')),
+            currentUser: JSON.parse(localStorage.getItem('user')).first_name,
         }
     },
     setup() {

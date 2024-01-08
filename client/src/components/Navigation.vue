@@ -104,7 +104,7 @@ export default {
 }
 
 .nav-link:hover {
-    color: hsla(201, 218, 212);
+    color: hsla(0, 0, 0);
     background-color: rgba(44, 99, 124, 0.1);
     transition: color 0.3s, background-color 0.3s;
 }
@@ -130,7 +130,7 @@ export default {
 }
 
 .navbar-brand:hover {
-    color: rgb(201, 218, 212);
+    color: rgb(0, 0, 0);
     text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.242), /* offset shadow */
     0 0 1em rgba(0, 0, 0, 0.5), /* inner shadow */
     0 0 0.2em rgba(0, 0, 0, 0.5); /*innermost shadow */

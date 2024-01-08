@@ -1,10 +1,9 @@
 <template>
-  <div class="container mt-5">
     <!-- This is the bookings part -->
     <div class=" mb-4">
       <div class="card">
         <div class="card-body text-white mailbox-widget pb-0" style="background-color: #567890;">
-          <h4 class="text-white pb-3">Bookings</h4>
+          <h2 class="text-white pb-3">Schedule an Appointment</h2>
         </div>
         <!-- Conditional Form -->
         <div v-if="showForm">
@@ -20,9 +19,10 @@
         <p v-if="error" class="text-danger">{{ error }}</p>
         <p v-if="responseMessage" class="text-success">{{ responseMessage }}</p>
       </div>
-    </div>
+    </div>  
     <div v-if="bookings.length > 0" class="row">
       <div class="col-md-12">
+        <div class="hidden-on-medium-small overflow-x:auto">
         <table class="table table-striped">
           <thead>
             <tr>
@@ -50,6 +50,25 @@
             </tr>
           </tbody>
         </table>
+      </div>
+      <div class="hidden-on-large">
+        <select v-model="selectedDateFilter">
+            <option value="2weeks">Next 2 Weeks</option>
+            <option value="1month">Next Month</option>
+            <option value="3months">Next 3 Months</option>
+            <option value="All">All</option>
+          </select>
+            <div class="booking-cards" v-for="booking in bookings" :key="booking._id">
+                <div class="booking-card">
+                    <p><strong>Dentist:</strong> {{ booking.dentistName }}</p>
+                    <p><strong>Date:</strong> {{ booking.date }}</p>
+                    <p><strong>Time:</strong> {{ booking.time }}</p>
+                    <p><strong>Status:</strong> {{ booking.status }}</p>
+                    <button style="width: 80%; display: flex; justify-content: center;" class="btn btn-success"
+                  @click="openForm(booking)">BOOK</button>
+                </div>
+            </div>
+        </div>
         <div class="pagination">
           <button @click="prevSection" :disabled="currentSection === 1">
             Prev</button>
@@ -62,9 +81,17 @@
         </div>
       </div>
     </div>
+    <div v-else-if="bookings === null && selectedClinic !== null">
+      <p></p><!-- Loading -->
+    </div>
+    <div v-else-if="bookings.length === 0 && bookings !== null && selectedClinic !== null">
+      <p>No bookings available at this location.</p>
+    </div>
+    <div v-else>
+      <p>Select a clinic to view available bookings.</p>
+    </div>
 
     <div id="mapContainer" ref="mapContainer"></div>
-  </div>
 </template>
 
 <script>
@@ -550,5 +577,43 @@ export default {
 .pagination button.active {
   background-color: #007bff;
   color: white;
+}
+
+
+/* Define card styles */
+.booking-cards {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.booking-card {
+    width: calc(50% - 20px);
+    /* Adjust the width as needed for medium screens */
+    background-color: #fff;
+    border: 1px solid #ccc;
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Media query for small screens */
+@media (max-width: 767px) {
+    .booking-card {
+        width: 100%;
+    }
+}
+
+/* Define the media query to hide the div on medium and small screens */
+@media (max-width: 991px) {
+    .hidden-on-medium-small {
+        display: none;
+    }
+}
+
+/* Define the media query to hide the div on medium and small screens */
+@media (min-width: 991px) {
+    .hidden-on-large {
+        display: none;
+    }
 }
 </style>

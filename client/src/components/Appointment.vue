@@ -3,7 +3,7 @@
         <div class=" mb-4">
             <div class="card">
                 <div class="card-body text-white mailbox-widget pb-0" style="background-color: #567890;">
-                    <h2 class="text-white pb-3">Bookings</h2>
+                    <h2 class="text-white pb-3">My Appointments</h2>
 
                 </div>
             </div>
@@ -12,35 +12,44 @@
             <input type="checkbox" v-model="showCancelled" id="show_cancelled">
             <label for="show_cancelled" style="margin-left: 3px; font-weight: bold;">Show cancelled bookings</label>
         </div>
-        <div class="table-responsive">
-            <table class="table custom-table">
-                <thead class="table-light sticky-header">
+        <div class="hidden-on-medium-small overflow-x:auto">
+            <table class="table table-striped">
+                <thead>
                     <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Date</th>
-                        <th scope="col">Time</th>
-                        <th scope="col">Clinic</th>
-                        <th scope="col">Message</th>
-                        <th scpop="col">Status</th>
-                        <th scope="col">Actions</th>
+                        <th>Patient</th>
+                        <th>Dentist</th>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Message</th>
+                        <th>Status</th>
+                        <th>Manage</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="(item, index) in filteredBookings" :key="item.id">
-                        <th scope="row">{{ index + 1 }}</th>
-                        <td>{{ item.date }}</td>
-                        <td>{{ item.time }}</td>
-                        <td>{{ item.dentistName }}</td>
-                        <td>{{ item.message }}</td>
-                        <td>{{ item.status }}</td>
-                        <td>
-                            <button v-if="item.status != 'CANCELED'" class="btn btn-danger"
-                                @click="cancelBooking(item)">Cancel</button>
-                            <p v-else>N/A</p>
-                        </td>
+                    <tr v-for="booking in filteredBookings" :key="booking._id">
+                        <td>{{ booking.patientName }}</td>
+                        <td>{{ booking.dentistName }}</td>
+                        <td>{{ booking.date }}</td>
+                        <td>{{ booking.time }}</td>
+                        <td>{{ booking.message }}</td>
+                        <td>{{ booking.status }}</td>
+                        <td> <button class="btn btn-danger" @click="cancelBooking(booking)">Cancel</button> </td>
                     </tr>
                 </tbody>
             </table>
+        </div>
+        <div class="hidden-on-large">
+            <div class="booking-cards" v-for="booking in filteredBookings" :key="booking._id">
+                <div class="booking-card">
+                    <p><strong>Patient:</strong> {{ booking.patientName }}</p>
+                    <p><strong>Dentist:</strong> {{ booking.dentistName }}</p>
+                    <p><strong>Date:</strong> {{ booking.date }}</p>
+                    <p><strong>Time:</strong> {{ booking.time }}</p>
+                    <p><strong>Message:</strong> {{ booking.message }}</p>
+                    <p><strong>Status:</strong> {{ booking.status }}</p>
+                    <button class="btn btn-danger" @click="cancelBooking(booking)">Cancel</button>
+                </div>
+            </div>
         </div>
     </div>
 </template>
@@ -154,6 +163,43 @@ export default {
 .table th,
 .table td {
     font-size: 1.25rem;
+}
+
+/* Define card styles */
+.booking-cards {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.booking-card {
+    width: calc(50% - 20px);
+    /* Adjust the width as needed for medium screens */
+    background-color: #fff;
+    border: 1px solid #ccc;
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Media query for small screens */
+@media (max-width: 767px) {
+    .booking-card {
+        width: 100%;
+    }
+}
+
+/* Define the media query to hide the div on medium and small screens */
+@media (max-width: 991px) {
+    .hidden-on-medium-small {
+        display: none;
+    }
+}
+
+/* Define the media query to hide the div on medium and small screens */
+@media (min-width: 991px) {
+    .hidden-on-large {
+        display: none;
+    }
 }
 </style>
 
